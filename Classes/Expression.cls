@@ -12,8 +12,14 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public Function Eval():                     End Function
-Public Property Get Rank() As OperatorRank: End Property
-Public Property Get CanEval() As Boolean:   End Property
-Public Function ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String: End Function
+
+Public Property Get CanEval() As Boolean:           End Property
+Public Function Eval():                             End Function
+Public Property Get Expr1() As Expression:          End Property
+Public Property Get Expr2() As Expression:          End Property
+Public Property Set Expr2(ByVal RHS As Expression): End Property
+Public Property Get Operator1() As String:          End Property
+Public Property Get Operator2() As String:          End Property
+Public Property Get Rank() As OperatorRank:         End Property
+Public Function ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String: End Function
 

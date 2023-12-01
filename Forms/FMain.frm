@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin VB.Form FMain 
    Caption         =   "MathCalcExpression"
-   ClientHeight    =   6030
+   ClientHeight    =   7140
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7230
+   ClientWidth     =   18090
    BeginProperty Font 
       Name            =   "Segoe UI"
       Size            =   8.25
@@ -16,9 +16,27 @@ Begin VB.Form FMain
    EndProperty
    Icon            =   "FMain.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6030
-   ScaleWidth      =   7230
+   ScaleHeight     =   7140
+   ScaleWidth      =   18090
    StartUpPosition =   3  'Windows-Standard
+   Begin VB.TextBox Text1 
+      Height          =   6375
+      Left            =   7320
+      MultiLine       =   -1  'True
+      ScrollBars      =   3  'Beides
+      TabIndex        =   39
+      Text            =   "FMain.frx":08CA
+      Top             =   600
+      Width           =   10335
+   End
+   Begin VB.CommandButton BtnTests 
+      Caption         =   "Tests"
+      Height          =   375
+      Left            =   7320
+      TabIndex        =   38
+      Top             =   120
+      Width           =   1335
+   End
    Begin VB.CommandButton BtnExprEvaluate 
       BackColor       =   &H000000FF&
       Caption         =   "="
@@ -700,8 +718,13 @@ Attribute VB_Exposed = False
 Option Explicit
 Private m_Expressions As Collection ' Of Expression
 Private m_Num         As String
+
+Private m_ExprStack  As ExprStack 'Deque
+'Private m_Expression  As ExprDeque
 Private m_Expression  As Expression
-Private m_LastBinOp   As OperatorBinary
+
+'Private m_LastBinOp   As OperatorBinary
+
 Private m_TBHasResult As Boolean
 
 'OK Windows Taschenrechner Calc.exe funktioniert so:
@@ -713,52 +736,16 @@ Private m_TBHasResult As Boolean
 '3. es gibt eine Liste rechts daneben die nach dem "=" den Term mit Ergebnis abspeichert
 'gib ein
 Private Sub Command1_Click()
-    Dim ex As Expression
-    'Set ex = MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(12), MNew.ExprLitNum(25)), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(32)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
+    MTests.Test1
     
-    'Set ex = MNew.ExprOpMul(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(12), MNew.ExprLitNum(25))), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(32)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
-    
-    'Set ex = MNew.ExprOpPow(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(51)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
-    
-    'Set ex = MNew.ExprOpPow(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3))), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(51)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
-    
-    'Set ex = MNew.ExprOpCub(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
-    
-    'Set ex = MNew.ExprOpCub(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    
-    
-    'Dim op As OperatorBinary
-    'Dim op1 As OperatorBinary
-    'Dim op2 As OperatorBinary
-    
-    'Set op1 = MNew.ExprOpAdd(MNew.ExprLitNum(3))
-    'Set op1.SecondExpr = MNew.ExprLitNum(4)
-    
-    'Set op2 = MNew.ExprOpAdd(MNew.ExprLitNum(5))
-    'Set op2.SecondExpr = MNew.ExprLitNum(6)
-    
-    'Set op = MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))
-    'Set op.SecondExpr = op2
-    
-    'Set ex = MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))
-    'Set ex = MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6))))
-    'Set ex = MNew.ExprOpSqr(op)
-    'Set ex = MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))))
-    Set ex = MNew.ExprOpSqrt(MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))))))
-    MsgBox ex.ToStr & " = " & ex.Eval
+
+End Sub
+
+Private Sub BtnTests_Click()
+    'MTests.Test1
+    'MTests.Test2
+    'MTests.Test3
+    Text1.Text = MTests.Test3
 End Sub
 
 Private Sub Form_Load()
@@ -933,7 +920,7 @@ Private Sub BtnExprEvaluate_Click()
     'Dim v As Double: v = Val(m_Num)
     'm_Num = vbNullString
     If Not m_LastBinOp Is Nothing Then
-        Set m_LastBinOp.SecondExpr = GetExprLitNum ' MNew.ExprConst(v)
+        Set m_LastBinOp.RHSExpr = GetExprLitNum ' MNew.ExprConst(v)
         Set m_LastBinOp = Nothing
     End If
     'm_Num = vbNullString
@@ -953,9 +940,10 @@ Private Sub BtnExprEvaluate_Click()
     'TxtInput.Text
 End Sub
 
-Private Sub UpdateData(expr As Expression)
-    Set m_Expression = expr
-    If TypeOf expr Is OperatorBinary Then Set m_LastBinOp = m_Expression
+Private Sub UpdateData(Expr As Expression)
+    Set m_Expression = Expr
+    'If TypeOf Expr Is OperatorBinary Then
+    Set m_LastBinOp = m_Expression
     UpdateView
 End Sub
 
@@ -979,5 +967,6 @@ End Sub
 
 Function EvalToStr(e As Expression, Optional ByVal inclResult As Boolean = False, Optional ByVal inclEquSign As Boolean = False) As String
     If e Is Nothing Then Exit Function
+    'If Not e.CanEval Then Exit Function
     EvalToStr = e.ToStr & IIf(inclResult, " = " & Trim(Str(e.Eval)), IIf(inclEquSign And e.CanEval, " = ", ""))
 End Function

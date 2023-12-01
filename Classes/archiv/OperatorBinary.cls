@@ -12,4 +12,8 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-Public Property Set SecondExpr(ByVal RHS As Expression): End Property
+Public Property Get Rank() As OperatorRank:           End Property
+Public Property Get Operator() As String:             End Property
+Public Property Get LHSExpr() As Expression:          End Property
+Public Property Get RHSExpr() As Expression:          End Property
+Public Property Set RHSExpr(ByVal RHS As Expression): End Property

@@ -1,23 +1,26 @@
 Attribute VB_Name = "MNew"
 Option Explicit
+
 Public Enum OperatorRank
     'lowest rank
     Rank0None = 0
     Rank1ExprConst
     Rank2ExprOpAddSubt
-    Rank3ExprOpMulDiv
-    Rank4ExprOpPow
-    Rank5ExprOpFact
-    Rank6ExprOpNeg
-    Rank7ExprOpBrac
+    Rank3ExprOpSubtrah
+    Rank4ExprOpMulDiv
+    Rank5ExprOpDivisor
+    Rank6ExprOpPow
+    Rank7ExprOpFact
+    Rank8ExprOpNeg
+    Rank9ExprOpBrac
     'highest rank
 End Enum
-
+'
 Public Function ExprLitBol(ByVal aValue As Boolean) As ExprLitBol 'can only be True or False
     Set ExprLitBol = New ExprLitBol: ExprLitBol.New_ aValue
 End Function
 
-Public Function ExprLitNum(ByVal aValue) As ExprLitNum       'any numeric value, int or float
+Public Function ExprLitNum(ByVal aValue) As ExprLitNum            'any numeric value, int or float
     Set ExprLitNum = New ExprLitNum: ExprLitNum.New_ aValue
 End Function
 
@@ -100,7 +103,7 @@ Public Function ExprOpSubt(aLHS As Expression, aRHS As Expression) As ExprOpSubt
     Set ExprOpSubt = COperatorBinary(OpBinSubt(aLHS), aRHS)
 End Function
 
-Private Function COperatorBinary(aOpBin As OperatorBinary, aRHSExpr As Expression) As OperatorBinary
-    Set COperatorBinary = aOpBin: Set COperatorBinary.SecondExpr = aRHSExpr
+Private Function COperatorBinary(aOpBin As Expression, aRHSExpr As Expression) As Expression  'OperatorBinary
+    Set COperatorBinary = aOpBin: Set COperatorBinary.Expr2 = aRHSExpr
 End Function
 
