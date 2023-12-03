@@ -15,7 +15,11 @@ Public Enum OperatorRank
     Rank9ExprOpBrac
     'highest rank
 End Enum
-'
+
+Public Function ExprFunction(ByVal aFuncName As String, ByVal CallableObject As Object, Optional ByVal ExprInside As Expression = Nothing) As ExprFunction
+    Set ExprFunction = New ExprFunction: ExprFunction.New_ aFuncName, CallableObject, ExprInside
+End Function
+    
 Public Function ExprLitBol(ByVal aValue As Boolean) As ExprLitBol 'can only be True or False
     Set ExprLitBol = New ExprLitBol: ExprLitBol.New_ aValue
 End Function
@@ -105,5 +109,13 @@ End Function
 
 Private Function COperatorBinary(aOpBin As Expression, aRHSExpr As Expression) As Expression  'OperatorBinary
     Set COperatorBinary = aOpBin: Set COperatorBinary.Expr2 = aRHSExpr
+End Function
+
+Public Function FormatAlg(ByVal IsCondensed As Boolean, Optional ByVal ExcelCompatible As Boolean = False) As FormatAlg
+    Set FormatAlg = New FormatAlg: FormatAlg.New_ IsCondensed, ExcelCompatible
+End Function
+
+Public Function FormatRPN(Optional ByVal SeparatorIsNewLine As Boolean = False) As FormatRPN
+    Set FormatRPN = New FormatRPN: FormatRPN.New_ SeparatorIsNewLine
 End Function
 

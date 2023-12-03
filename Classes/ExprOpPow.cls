@@ -78,7 +78,7 @@ Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal Parent
 '    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s
 '    If Not m_RHS Is Nothing Then s = s & m_RHS.ToStr(myRank) & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
 '    Expression_ToStr = s
-    Expression_ToStr Fmt.ExprOpBinToStr(Me, ParentRank)
+    Expression_ToStr = Fmt.ExprOpPowToStr(Me, ParentRank)
 End Function
 
 ' v ############################## v '   Implements OperatorBinary    ' v ############################## v '

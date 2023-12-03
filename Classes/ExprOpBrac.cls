@@ -37,7 +37,7 @@ Private Function Expression_Eval() 'As Double
 End Function
 
 Private Property Get Expression_Expr1() As Expression
-    '
+    Set Expression_Expr1 = m_Ins
 End Property
 
 Private Property Get Expression_Expr2() As Expression
@@ -49,11 +49,11 @@ Private Property Set Expression_Expr2(ByVal RHS As Expression)
 End Property
 
 Private Property Get Expression_Operator1() As String
-    Expression_Operator1 = myOp
+    Expression_Operator1 = myOp1
 End Property
 
 Private Property Get Expression_Operator2() As String
-    Expression_Operator2 = myOp
+    Expression_Operator2 = myOp2
 End Property
 
 Private Property Get Expression_Rank() As OperatorRank
@@ -61,11 +61,12 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    Dim b As Boolean: b = ParentRank < myRank And myRank <> m_Ins.Rank
-    Dim s As String:  s = IIf(b, "(", "")
-    If Not m_Ins Is Nothing Then s = s & m_Ins.ToStr(myRank)
-    s = s & IIf(b, ")", "")
-    Expression_ToStr = s
+'    Dim b As Boolean: b = ParentRank < myRank And myRank <> m_Ins.Rank
+'    Dim s As String:  s = IIf(b, "(", "")
+'    If Not m_Ins Is Nothing Then s = s & m_Ins.ToStr(myRank)
+'    s = s & IIf(b, ")", "")
+'    Expression_ToStr = s
+    Expression_ToStr = Fmt.ExprOpBracToStr(Me, ParentRank)
 End Function
 
 

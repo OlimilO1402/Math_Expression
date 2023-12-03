@@ -18,5 +18,9 @@ Public Function ExprOpSubtToStr(aOpBin As Expression, Optional ByVal ParentRank 
 Public Function ExprOpDivToStr(aOpDiv As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
 Public Function ExprOpUnaAsLToStr(aOpUnAsL As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:  End Function
 Public Function ExprOpUnaAsRToStr(aOpUnAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:  End Function
-Public Function ExprOpUnaAsLRToStr(aOpUnAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String: End Function
-
+Public Function ExprOpBracToStr(aOpUnAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:    End Function
+Public Function ExprFunctionToStr(aFunc As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:     End Function
+Public Function ExprFuncAbsToStr(aExprAbs As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:   End Function
+Public Function ExprOpCubToStr(aOpCub As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
+Public Function ExprOpSqrToStr(aOpSqr As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
+Public Function ExprOpPowToStr(aOpPow As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function

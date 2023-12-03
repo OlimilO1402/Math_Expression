@@ -14,11 +14,11 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements Expression
 '
-'
+Private m_LHS As Expression
 Private m_RHS As Expression
 Private Const myRank As Long = OperatorRank.Rank5ExprOpDivisor
-Private Const myOp   As String = "1 / "
-'
+Private Const myOp   As String = " / "
+Private Sub Class_Initialize():    Set m_LHS = MNew.ExprLitNum(1): End Sub
 
 Friend Sub New_(aRHS As Expression)
     Set m_RHS = aRHS
@@ -37,7 +37,7 @@ Private Function Expression_Eval() 'As Double
 End Function
 
 Private Property Get Expression_Expr1() As Expression
-    '
+    Set Expression_Expr1 = m_LHS
 End Property
 
 Private Property Get Expression_Expr2() As Expression
@@ -65,7 +65,7 @@ Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal Parent
 '    Dim s As String:  s = myOp
 '    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & s & m_RHS.ToStr(myRank) & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
 '    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpUnaAsLToStr(Me, ParentRank)
+    Expression_ToStr = Fmt.ExprOpDivToStr(Me, ParentRank)
 End Function
 
 

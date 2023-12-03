@@ -17,8 +17,8 @@ Implements Expression
 '
 Private m_Ins As Expression
 Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
-Private Const myOp   As String = "|"
-'
+Private Const myOp1  As String = "| "
+Private Const myOp2  As String = " |"
 
 Friend Sub New_(aIns As Expression)
     Set m_Ins = aIns
@@ -49,11 +49,11 @@ Private Property Set Expression_Expr2(ByVal RHS As Expression)
 End Property
 
 Private Property Get Expression_Operator1() As String
-    Expression_Operator1 = myOp
+    Expression_Operator1 = myOp1
 End Property
 
 Private Property Get Expression_Operator2() As String
-    Expression_Operator2 = myOp
+    Expression_Operator2 = myOp2
 End Property
 
 Private Property Get Expression_Rank() As OperatorRank
@@ -65,6 +65,7 @@ Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal Parent
 '    Dim s As String:  s = myOp
 '    If Not m_Ins Is Nothing Then s = IIf(b, "(", "") & s & m_Ins.ToStr(myRank) & myOp & IIf(b, ")", "")
 '    Expression_ToStr = s
+    Expression_ToStr = Fmt.ExprFuncAbsToStr(Me, ParentRank)
 End Function
 
 

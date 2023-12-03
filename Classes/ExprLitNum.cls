@@ -19,14 +19,10 @@ Private m_Value
 Private Const myRank As Long = OperatorRank.Rank1ExprConst
 '
 '
-
 Friend Sub New_(aValue)
     m_Value = aValue
 End Sub
-
-Public Property Get Value()
-    Value = m_Value
-End Property
+Public Property Get Value():    Value = m_Value:    End Property
 
 ' v ############################## v '   Implements Expression    ' v ############################## v '
 Private Property Get Expression_CanEval() As Boolean

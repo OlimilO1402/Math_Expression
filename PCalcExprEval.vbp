@@ -31,6 +31,7 @@ Class=FormatRPN; Classes\FormatRPN.cls
 Class=FormatExpr; Classes\FormatExpr.cls
 Module=MTests; Modules\MTests.bas
 ResFile32="Resources\MyRes.res"
+Class=ExprFunction; Classes\ExprFunction.cls
 Startup="Sub Main"
 HelpFile=""
 ExeName32="CalcExprEval.exe"

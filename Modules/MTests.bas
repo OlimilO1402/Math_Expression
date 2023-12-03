@@ -1,5 +1,6 @@
 Attribute VB_Name = "MTests"
 Option Explicit
+Private m_col As Collection
 
 Public Sub Test1()
     Dim ex As Expression
@@ -100,7 +101,7 @@ Public Sub Test2()
     
 End Sub
 
-Public Function Test3() As String
+Public Function Test3(Fmt As FormatExpr) As String
     
 '    Dim FR As FormatRPN: Set FR = New FormatRPN
 '
@@ -124,13 +125,15 @@ Public Function Test3() As String
 '    Set ex = MNew.ExprOpDiv(ex1, ex2)
 '    MsgBox ex.ToStr(FA) & " = " & ex.Eval
 '    'MsgBox ex.ToStr(FR) & " = " & ex.Eval
-    Dim FA As FormatAlg: Set FA = New FormatAlg
-    Dim col As Collection: Set col = GetListOfBinaryExpressions
+    'Dim FA As FormatAlg: Set FA = MNew.FormatAlg(True)
+    Dim forExcel As Boolean: forExcel = True
+    Set m_col = GetListOfBinaryExpressions
     Dim s As String, i As Long
     Dim ex As Expression
-    For i = 1 To col.Count
-        Set ex = col.Item(i)
-        s = s & "=" & ex.ToStr(FA) & vbCrLf
+    For i = 1 To m_col.Count
+        Set ex = m_col.Item(i)
+        If forExcel Then s = s & "="
+        s = s & ex.ToStr(Fmt) & vbCrLf
     Next
     Test3 = s
 End Function
@@ -138,20 +141,21 @@ End Function
 ' OK eine Testroutine mit allen Operatoren
 ' '
 Public Function GetListOfBinaryExpressions() As Collection
+    Dim n As Long: n = 10
     Dim exList As New Collection
-    Dim ex1 As Expression: Set ex1 = MNew.ExprLitNum(1)
-    Dim ex2 As Expression: Set ex2 = MNew.ExprLitNum(2)
-    Dim ex3 As Expression: Set ex3 = MNew.ExprLitNum(3)
-    Dim ex4 As Expression: Set ex4 = MNew.ExprLitNum(4)
+    Dim ex1 As Expression: Set ex1 = MNew.ExprLitNum(2)
+    Dim ex2 As Expression: Set ex2 = MNew.ExprLitNum(3)
+    Dim ex3 As Expression: Set ex3 = MNew.ExprLitNum(4)
+    Dim ex4 As Expression: Set ex4 = MNew.ExprLitNum(5)
     Dim ex  As Expression
     Dim exL  As Expression
     Dim exR  As Expression
     Dim i As Long, j As Long, k As Long
-    For i = 1 To 4
-        For j = 1 To 4
-            For k = 1 To 4
-                Set exL = GetEx(j, ex1, ex2)
-                Set exR = GetEx(k, ex4, ex3)
+    For i = 1 To n
+        For j = 1 To n
+            For k = 1 To n
+                Set exL = GetEx(k, ex4, ex3)
+                Set exR = GetEx(j, ex2, ex1)
                 Set ex = GetEx(i, exL, exR)
                 exList.Add ex
             Next
@@ -161,10 +165,37 @@ Public Function GetListOfBinaryExpressions() As Collection
 End Function
 
 Private Function GetEx(ByVal e As Long, exL As Expression, exR As Expression) As Expression
+    Static toggleAbs As Boolean
+    Static toggle1dx As Boolean
+    Static toggleBrc As Boolean
+    Static toggleSqr As Boolean
+    Static toggleCub As Boolean
     Select Case e
-    Case 1: Set GetEx = MNew.ExprOpAdd(exL, exR)
-    Case 2: Set GetEx = MNew.ExprOpSubt(exL, exR)
-    Case 3: Set GetEx = MNew.ExprOpMul(exL, exR)
-    Case 4: Set GetEx = MNew.ExprOpDiv(exL, exR)
+    Case 1:  Set GetEx = MNew.ExprOpAdd(exL, exR)
+    Case 2:  Set GetEx = MNew.ExprOpSubt(exL, exR)
+    Case 3:  Set GetEx = MNew.ExprOpMul(exL, exR)
+    Case 4:  Set GetEx = MNew.ExprOpDiv(exL, exR)
+    Case 5:  toggleAbs = Not toggleAbs: If toggleAbs Then Set GetEx = MNew.ExprOpAbs(exL) Else Set GetEx = MNew.ExprOpAbs(exR)
+    Case 6:  toggle1dx = Not toggle1dx: If toggle1dx Then Set GetEx = MNew.ExprOp1DivX(exL) Else Set GetEx = MNew.ExprOp1DivX(exR)
+    Case 7:  toggleBrc = Not toggleBrc: If toggleBrc Then Set GetEx = MNew.ExprOpBrac(exL) Else Set GetEx = MNew.ExprOpBrac(exR)
+    Case 8:  toggleSqr = Not toggleSqr: If toggleSqr Then Set GetEx = MNew.ExprOpSqr(exL) Else Set GetEx = MNew.ExprOpSqr(exR)
+    Case 9:  toggleCub = Not toggleCub: If toggleCub Then Set GetEx = MNew.ExprOpCub(exL) Else Set GetEx = MNew.ExprOpCub(exR)
+    Case 10: Set GetEx = MNew.ExprOpPow(exL, exR)
+    
     End Select
 End Function
+
+Sub TestVBCode()
+    '
+End Sub
+
+Public Function GetResults() As String
+    Dim s As String, i As Long
+    Dim ex As Expression
+    For i = 1 To m_col.Count
+        Set ex = m_col.Item(i)
+        s = s & ex.Eval & vbCrLf
+    Next
+    GetResults = s
+End Function
+

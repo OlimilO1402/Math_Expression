@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin VB.Form FMain 
    Caption         =   "MathCalcExpression"
-   ClientHeight    =   7140
+   ClientHeight    =   6150
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   18090
+   ClientWidth     =   13005
    BeginProperty Font 
       Name            =   "Segoe UI"
       Size            =   8.25
@@ -16,18 +16,75 @@ Begin VB.Form FMain
    EndProperty
    Icon            =   "FMain.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   7140
-   ScaleWidth      =   18090
+   ScaleHeight     =   6150
+   ScaleWidth      =   13005
    StartUpPosition =   3  'Windows-Standard
-   Begin VB.TextBox Text1 
-      Height          =   6375
+   Begin VB.CommandButton BtnGetResults 
+      Caption         =   "GetResults"
+      Height          =   375
       Left            =   7320
+      TabIndex        =   46
+      Top             =   600
+      Width           =   1335
+   End
+   Begin VB.Frame Frame1 
+      Caption         =   "Output"
+      Height          =   975
+      Left            =   8760
+      TabIndex        =   40
+      Top             =   120
+      Width           =   4215
+      Begin VB.CheckBox ChkXLCompat 
+         Caption         =   "xL compat."
+         Height          =   255
+         Left            =   2760
+         TabIndex        =   45
+         Top             =   240
+         Width           =   1335
+      End
+      Begin VB.CheckBox ChkSepAsNewL 
+         Caption         =   "Separator As NewLine"
+         Height          =   255
+         Left            =   1440
+         TabIndex        =   44
+         Top             =   600
+         Width           =   2055
+      End
+      Begin VB.CheckBox ChkCondensed 
+         Caption         =   "Condensed"
+         Height          =   255
+         Left            =   1440
+         TabIndex        =   43
+         Top             =   240
+         Width           =   1335
+      End
+      Begin VB.OptionButton OptRPN 
+         Caption         =   "ReversePN"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   42
+         Top             =   600
+         Width           =   1215
+      End
+      Begin VB.OptionButton OptAlgebra 
+         Caption         =   "Algebraic"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   41
+         Top             =   240
+         Value           =   -1  'True
+         Width           =   1215
+      End
+   End
+   Begin VB.TextBox Text1 
+      Height          =   5055
+      Left            =   7200
       MultiLine       =   -1  'True
       ScrollBars      =   3  'Beides
       TabIndex        =   39
       Text            =   "FMain.frx":08CA
-      Top             =   600
-      Width           =   10335
+      Top             =   1080
+      Width           =   5775
    End
    Begin VB.CommandButton BtnTests 
       Caption         =   "Tests"
@@ -665,7 +722,7 @@ Begin VB.Form FMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   5940
+      Height          =   6150
       Left            =   3600
       TabIndex        =   37
       Top             =   0
@@ -741,12 +798,23 @@ Private Sub Command1_Click()
 
 End Sub
 
+Private Sub BtnGetResults_Click()
+    Text1.Text = MTests.GetResults
+End Sub
+
 Private Sub BtnTests_Click()
     'MTests.Test1
     'MTests.Test2
     'MTests.Test3
-    Text1.Text = MTests.Test3
+    Text1.Text = MTests.Test3(GetFormat)
 End Sub
+
+Private Function GetFormat() As FormatExpr
+    Dim b1 As Boolean: b1 = ChkCondensed.Value = vbChecked
+    Dim b2 As Boolean: b2 = ChkXLCompat.Value = vbChecked
+    Dim b3 As Boolean: b3 = ChkSepAsNewL.Value = vbChecked
+    If OptAlgebra.Value Then Set GetFormat = MNew.FormatAlg(b1, b2) Else Set GetFormat = MNew.FormatRPN(b3)
+End Function
 
 Private Sub Form_Load()
     Set m_Expressions = New Collection
