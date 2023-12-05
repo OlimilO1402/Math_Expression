@@ -37,18 +37,35 @@ Public Function Fact(ByVal N As Long) As Variant 'As Decimal
     Fact = m_Factorials(N)
 End Function
 
+'    Dim num As Double, e As Double: e = Exp(1) ' e = 2,71828182845905
+'    Debug.Print e
+'    Dim s As String
+'    num = e * e: s = s & "LN(" & num & ")     = " & MMath.LN(num) & vbCrLf      ' = 2
+'    num = 1000:  s = s & "Log10(" & num & ")  = " & MMath.Log10(num) & vbCrLf   ' = 3
+'    num = 10000: s = s & "Log10(" & num & ")  = " & MMath.LogN(num) & vbCrLf    ' = 4
+'    num = 32:    s = s & "Log(" & num & ", 2) = " & MMath.LogN(num, 2) & vbCrLf ' = 5
+'    MsgBox s
+'number          |  base        | xl-function     | result | description
+'    7.389056099 |  2,718281828 | LN(Zahl)        =   2    | LN aka ln  := Logarithm to base  e
+' 1000           | 10           | Log10(Zahl)     =   3    | Log10      := Logarithm to base 10, with the excelfunction LOG10
+'10000           | 10           | Log(Zahl)       =   4    | Log aka lg := Logarithm to base 10, with the excelfunction Log, base not explicitely given
+'   32           |  2           | Log(Zahl;Basis) =   5    | Log        := Logarithm to base  2, if the base 2 was explicitely given
+
+'Logarithmus naturalis, logarithm to base e
+Public Function LN(ByVal d As Double) As Double
+    LN = VBA.Math.Log(d)
+End Function
+
+'Logarithm to the base 10
 Public Function Log10(ByVal d As Double) As Double
+    If d = 0 Then Exit Function
     Log10 = VBA.Math.Log(d) / VBA.Math.Log(10)
 End Function
 
-Public Function LN(ByVal d As Double) As Double
-  LN = VBA.Math.Log(d)
-End Function
-
+'Logarithm to a given base
 Public Function LogN(ByVal x As Double, _
-                     Optional ByVal N As Double = 10#) As Double
-                     'n darf nicht eins und nicht 0 sein
-    LogN = VBA.Math.Log(x) / VBA.Math.Log(N)
+                     Optional ByVal base As Double = 10#) As Double
+                     'base must not be 1 or 0
+    If base <= 1 Then Exit Function
+    LogN = VBA.Math.Log(x) / VBA.Math.Log(base)
 End Function
-
-

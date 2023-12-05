@@ -6,62 +6,71 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ExprOpCub"
+Attribute VB_Name = "ExprOpIIf"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Implements Expression
+Private m_Condition  As Expression
+Private m_ExprTrue   As Expression
+Private m_ExprFalse  As Expression
+Private Const myOp   As String = "IIf"
+Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
 '
-Private m_LHS As Expression
-Private m_RHS As Expression '
-Private Const myRank As Long = OperatorRank.Rank6ExprOpPow
-Private Const myOp   As String = "³"
 '
-Private Sub Class_Initialize():    Set m_RHS = MNew.ExprLitNum(3): End Sub
-Friend Sub New_(aLHS As Expression)
-    Set m_LHS = aLHS
+Friend Sub New_(aCond As Expression, Optional ExprTrue As Expression = Nothing, Optional ExprFalse As Expression = Nothing)
+    Set m_Condition = aCond: Set m_ExprTrue = ExprTrue:                Set m_ExprFalse = ExprFalse
 End Sub
+
+Public Property Set Condition(RHS As Expression)
+    Set m_Condition = RHS
+End Property
+
+Public Property Get Condition() As Expression
+    Set Condition = m_Condition
+End Property
 
 ' v ############################## v '   Implements Expression    ' v ############################## v '
 Private Property Get Expression_CanEval() As Boolean
-    If m_LHS Is Nothing Then Exit Property
-    '
-    Expression_CanEval = m_LHS.CanEval
+    If m_Condition Is Nothing Then Exit Property
+    If m_ExprTrue Is Nothing Then Exit Property
+    If m_ExprFalse Is Nothing Then Exit Property
+    Expression_CanEval = m_Condition.CanEval And m_ExprTrue.CanEval And m_ExprFalse.CanEval
 End Property
 
 Private Function Expression_Eval()
-Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
-    Expression_Eval = m_LHS.Eval ^ 3
-    Exit Function
-Catch:
-    MsgBox Err.number & " " & Err.Description
+    If m_Condition.Eval Then
+        Expression_Eval = m_ExprTrue.Eval
+    Else
+        Expression_Eval = m_ExprFalse.Eval
+    End If
 End Function
 
 
 Private Property Set Expression_Expr1(ByVal RHS As Expression)
-    Set m_LHS = RHS
+    Set m_ExprTrue = RHS
 End Property
 Private Property Get Expression_Expr1() As Expression
-    Set Expression_Expr1 = m_LHS
+    Set Expression_Expr1 = m_ExprTrue
 End Property
 
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
-    Set m_RHS = RHS
+    Set m_ExprFalse = RHS
 End Property
 Private Property Get Expression_Expr2() As Expression
-    Set Expression_Expr2 = m_RHS
+    Set Expression_Expr2 = m_ExprFalse
 End Property
 
 
 Private Property Get Expression_Operator1() As String
-    Expression_Operator1 = " ^ "
+    Expression_Operator1 = myOp
 End Property
 Private Property Get Expression_Operator2() As String
-    Expression_Operator2 = myOp
+    '
 End Property
 
 
@@ -70,10 +79,7 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-'    Dim b As Boolean: b = myRank <= ParentRank 'And ParentRank = OperatorRank.Rank7ExprOpBrac
-'    Dim s As String:  s = myOp
-'    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
-'    'If Not m_LHS Is Nothing Then s = m_LHS.ToStr(myRank) & s '& " = " & Trim(Str(Expression_Eval))
-'    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpCubToStr(Me, ParentRank)
+    Expression_ToStr = Fmt.ExprOpIIfToStr(Me, ParentRank)
 End Function
+
+

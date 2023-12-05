@@ -32,29 +32,38 @@ Private Property Get Expression_CanEval() As Boolean
 End Property
 
 Private Function Expression_Eval() 'As Double
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = m_Ins.Eval
+    Exit Function
+Catch:
+    MsgBox Err.number & " " & Err.Description
 End Function
 
+
+Private Property Set Expression_Expr1(ByVal RHS As Expression)
+    Set m_Ins = RHS
+End Property
 Private Property Get Expression_Expr1() As Expression
     Set Expression_Expr1 = m_Ins
 End Property
 
-Private Property Get Expression_Expr2() As Expression
-    Set Expression_Expr2 = m_Ins
-End Property
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
     Set m_Ins = RHS
 End Property
+Private Property Get Expression_Expr2() As Expression
+    Set Expression_Expr2 = m_Ins
+End Property
+
 
 Private Property Get Expression_Operator1() As String
     Expression_Operator1 = myOp1
 End Property
-
 Private Property Get Expression_Operator2() As String
     Expression_Operator2 = myOp2
 End Property
+
 
 Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank

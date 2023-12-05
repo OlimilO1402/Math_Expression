@@ -32,29 +32,38 @@ Private Property Get Expression_CanEval() As Boolean
 End Property
 
 Private Function Expression_Eval()
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = MMath.Fact(m_LHS.Eval)
+    Exit Function
+Catch:
+    MsgBox Err.number & " " & Err.Description
 End Function
 
+
+Private Property Set Expression_Expr1(ByVal RHS As Expression)
+    Set m_LHS = RHS
+End Property
 Private Property Get Expression_Expr1() As Expression
     Set Expression_Expr1 = m_LHS
 End Property
 
-Private Property Get Expression_Expr2() As Expression
-    '
-End Property
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
-    '
+    Set m_LHS = RHS
 End Property
+Private Property Get Expression_Expr2() As Expression
+    Set Expression_Expr2 = m_LHS
+End Property
+
 
 Private Property Get Expression_Operator1() As String
-    '
+    Expression_Operator1 = myOp
 End Property
-
 Private Property Get Expression_Operator2() As String
     Expression_Operator2 = myOp
 End Property
+
 
 Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
@@ -65,6 +74,6 @@ Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal Parent
 '    Dim s As String:  s = myOp
 '    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
 '    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpUnaAsRToStr(Me, ParentRank)
+    Expression_ToStr = Fmt.ExprOpFactToStr(Me, ParentRank)
 End Function
 

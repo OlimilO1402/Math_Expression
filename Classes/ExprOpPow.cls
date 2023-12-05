@@ -32,34 +32,46 @@ Private Property Get Expression_CanEval() As Boolean
 End Property
 
 Private Function Expression_Eval() 'As Double
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = m_LHS.Eval ^ m_RHS.Eval
+    Exit Function
+Catch:
+    MsgBox Err.number & " " & Err.Description
 End Function
 
+
+Private Property Set Expression_Expr1(ByVal RHS As Expression)
+    Set m_LHS = RHS
+End Property
 Private Property Get Expression_Expr1() As Expression
     Set Expression_Expr1 = m_LHS
 End Property
 
-Private Property Get Expression_Expr2() As Expression
-    Set Expression_Expr2 = m_RHS
-End Property
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
     Set m_RHS = RHS
 End Property
+Private Property Get Expression_Expr2() As Expression
+    Set Expression_Expr2 = m_RHS
+End Property
+
 
 Private Property Get Expression_Operator1() As String
     Expression_Operator1 = myOp
 End Property
-
 Private Property Get Expression_Operator2() As String
+    '
 End Property
+
 
 Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    Expression_ToStr = Fmt.ExprOpPowToStr(Me, ParentRank)
+End Function
     'hier werden 3 verschiedene Klammern gebraucht
     '((basis1 + basis2) ^ (expo1 + expo2))
     '1. die Klammer ganz auﬂen
@@ -78,8 +90,6 @@ Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal Parent
 '    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s
 '    If Not m_RHS Is Nothing Then s = s & m_RHS.ToStr(myRank) & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
 '    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpPowToStr(Me, ParentRank)
-End Function
 
 ' v ############################## v '   Implements OperatorBinary    ' v ############################## v '
 'Private Property Get OperatorBinary_Operator() As String

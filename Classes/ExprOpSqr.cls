@@ -32,35 +32,47 @@ Private Property Get Expression_CanEval() As Boolean
 End Property
 
 Private Function Expression_Eval()
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = m_LHS.Eval ^ 2
+    Exit Function
+Catch:
+    MsgBox Err.number & " " & Err.Description
 End Function
 
+
+Private Property Set Expression_Expr1(ByVal RHS As Expression)
+    Set m_LHS = RHS
+End Property
 Private Property Get Expression_Expr1() As Expression
     Set Expression_Expr1 = m_LHS
 End Property
 
-Private Property Get Expression_Expr2() As Expression
-    Set Expression_Expr2 = m_RHS
-End Property
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
     Set m_RHS = RHS
 End Property
+Private Property Get Expression_Expr2() As Expression
+    Set Expression_Expr2 = m_RHS
+End Property
+
 
 Private Property Get Expression_Operator1() As String
     Expression_Operator1 = " ^ "
 End Property
-
 Private Property Get Expression_Operator2() As String
     Expression_Operator2 = myOp
 End Property
+
 
 Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    Expression_ToStr = Fmt.ExprOpSqrToStr(Me, ParentRank)
+End Function
+
     'nur dann keine Klammer ganz auﬂenrum, wenn
     'Dim b As Boolean: b = myRank <= ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
 '    Dim b As Boolean: b = ParentRank <> OperatorRank.Rank7ExprOpBrac And ParentRank <> OperatorRank.Rank0None
@@ -68,6 +80,4 @@ Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal Parent
 '    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
 '    'If Not m_LHS Is Nothing Then s = m_LHS.ToStr(myRank) & s '& " = " & Trim(Str(Expression_Eval))
 '    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpSqrToStr(Me, ParentRank)
-End Function
 

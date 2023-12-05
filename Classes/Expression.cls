@@ -15,9 +15,10 @@ Option Explicit
 
 Public Property Get CanEval() As Boolean:           End Property
 Public Function Eval():                             End Function
+Public Property Set Expr1(ByVal RHS As Expression): End Property
 Public Property Get Expr1() As Expression:          End Property
-Public Property Get Expr2() As Expression:          End Property
 Public Property Set Expr2(ByVal RHS As Expression): End Property
+Public Property Get Expr2() As Expression:          End Property
 Public Property Get Operator1() As String:          End Property
 Public Property Get Operator2() As String:          End Property
 Public Property Get Rank() As OperatorRank:         End Property

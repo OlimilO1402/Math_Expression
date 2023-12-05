@@ -19,6 +19,14 @@ Begin VB.Form FMain
    ScaleHeight     =   6150
    ScaleWidth      =   13005
    StartUpPosition =   3  'Windows-Standard
+   Begin VB.CommandButton Command1 
+      Caption         =   "Command1"
+      Height          =   255
+      Left            =   9720
+      TabIndex        =   47
+      Top             =   0
+      Width           =   1095
+   End
    Begin VB.CommandButton BtnGetResults 
       Caption         =   "GetResults"
       Height          =   375
@@ -780,7 +788,7 @@ Private m_ExprStack  As ExprStack 'Deque
 'Private m_Expression  As ExprDeque
 Private m_Expression  As Expression
 
-'Private m_LastBinOp   As OperatorBinary
+Private m_LastBinOp   As Expression 'OperatorBinary
 
 Private m_TBHasResult As Boolean
 
@@ -792,21 +800,13 @@ Private m_TBHasResult As Boolean
 '   nach klicken des Schalters "=" wird in Anzeige 2 angezeigt "1 + 1 =" und in Anzeige 1 wird das Ergebnis ausgegeben
 '3. es gibt eine Liste rechts daneben die nach dem "=" den Term mit Ergebnis abspeichert
 'gib ein
-Private Sub Command1_Click()
-    MTests.Test1
-    
 
+Private Sub BtnTests_Click()
+    Text1.Text = MTests.Test3(GetFormat)
 End Sub
 
 Private Sub BtnGetResults_Click()
     Text1.Text = MTests.GetResults
-End Sub
-
-Private Sub BtnTests_Click()
-    'MTests.Test1
-    'MTests.Test2
-    'MTests.Test3
-    Text1.Text = MTests.Test3(GetFormat)
 End Sub
 
 Private Function GetFormat() As FormatExpr
@@ -815,6 +815,32 @@ Private Function GetFormat() As FormatExpr
     Dim b3 As Boolean: b3 = ChkSepAsNewL.Value = vbChecked
     If OptAlgebra.Value Then Set GetFormat = MNew.FormatAlg(b1, b2) Else Set GetFormat = MNew.FormatRPN(b3)
 End Function
+
+Private Sub Command1_Click()
+'    Dim tef As TestExFunc: Set tef = New TestExFunc
+'    MsgBox tef.TestIt(1, 2, 3)
+'    Dim fnc As ExprFunction
+'    Set fnc = MNew.ExprFunction("TestIt", tef)
+'    fnc.params.Add MNew.ExprLitNum(1)
+'    fnc.params.Add MNew.ExprLitNum(2)
+'    fnc.params.Add MNew.ExprLitNum(3)
+'    Dim ex As Expression: Set ex = fnc
+'    MsgBox ex.Eval
+    
+    Dim ex As Expression
+    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+    MsgBox ex.Eval
+    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitNum(True), MNew.ExprLitBol(False))
+    MsgBox ex.Eval
+    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+    MsgBox ex.Eval
+    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(True), MNew.ExprLitBol(False))
+    MsgBox ex.Eval
+    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
+    MsgBox ex.Eval
+    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
+    MsgBox ex.Eval
+End Sub
 
 Private Sub Form_Load()
     Set m_Expressions = New Collection
@@ -988,8 +1014,8 @@ Private Sub BtnExprEvaluate_Click()
     'Dim v As Double: v = Val(m_Num)
     'm_Num = vbNullString
     If Not m_LastBinOp Is Nothing Then
-        Set m_LastBinOp.RHSExpr = GetExprLitNum ' MNew.ExprConst(v)
-        Set m_LastBinOp = Nothing
+        Set m_LastBinOp.Expr2 = GetExprLitNum ' MNew.ExprConst(v)
+        'Set m_LastBinOp = Nothing '????
     End If
     'm_Num = vbNullString
     If m_Expression Is Nothing Then Exit Sub
@@ -1036,5 +1062,5 @@ End Sub
 Function EvalToStr(e As Expression, Optional ByVal inclResult As Boolean = False, Optional ByVal inclEquSign As Boolean = False) As String
     If e Is Nothing Then Exit Function
     'If Not e.CanEval Then Exit Function
-    EvalToStr = e.ToStr & IIf(inclResult, " = " & Trim(Str(e.Eval)), IIf(inclEquSign And e.CanEval, " = ", ""))
+    EvalToStr = e.ToStr(GetFormat) & IIf(inclResult, " = " & Trim(Str(e.Eval)), IIf(inclEquSign And e.CanEval, " = ", ""))
 End Function

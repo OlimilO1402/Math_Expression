@@ -6,35 +6,44 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ExprOpAdd"
+Attribute VB_Name = "ExprOpLogN"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Implements Expression
-'Implements OperatorBinary
+'
 Private m_LHS As Expression
 Private m_RHS As Expression
-Private Const myRank As Long = OperatorRank.Rank2ExprOpAddSubt
-Private Const myOp   As String = " + "
+Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
+Private Const myOp   As String = "Log"
 '
 
-Friend Sub New_(aLHS As Expression)
-    Set m_LHS = aLHS
+Friend Sub New_(aLHS As Expression, aRHS As Expression)
+    Set m_LHS = aLHS:   Set m_RHS = aRHS
 End Sub
+
+Public Property Get CountParams() As Long
+    CountParams = 2
+End Property
 
 ' v ############################## v '   Implements Expression    ' v ############################## v '
 Private Property Get Expression_CanEval() As Boolean
     If m_LHS Is Nothing Then Exit Function
-    If m_RHS Is Nothing Then Exit Function
-    Expression_CanEval = m_LHS.CanEval And m_RHS.CanEval ' True
+    'If m_RHS Is Nothing Then Exit Function
+    Expression_CanEval = m_LHS.CanEval 'And m_RHS.CanEval
 End Property
 
-Private Function Expression_Eval() 'As Double
+Private Function Expression_Eval()
 Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
-    Expression_Eval = m_LHS.Eval + m_RHS.Eval
+    If m_RHS Is Nothing Then
+        Expression_Eval = MMath.LogN(m_LHS.Eval)
+        Exit Function
+    End If
+    If Not m_RHS.CanEval Then Exit Function
+    Expression_Eval = MMath.LogN(m_LHS.Eval, m_RHS.Eval)
     Exit Function
 Catch:
     MsgBox Err.number & " " & Err.Description
@@ -70,33 +79,13 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-'    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
-'    Dim s As String:  s = myOp
-'    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(Fmt, myRank) & s
-'    If Not m_RHS Is Nothing Then s = s & m_RHS.ToStr(Fmt, myRank) & IIf(b, ")", "")
-'    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpBinToStr(Me, ParentRank)
+    Expression_ToStr = Fmt.ExprFunction2ToStr(Me, ParentRank)
 End Function
 
+'    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
+'    Dim s As String:  s = myOp
+'    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & myOp & m_RHS.ToStr(myRank) & ")" & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
+'    Expression_ToStr = s
 
-' v ############################## v '   Implements OperatorBinary    ' v ############################## v '
-'Private Property Get OperatorBinary_Operator() As String
-'    OperatorBinary_Operator = myOp
-'End Property
-'
-'Private Property Get OperatorBinary_LHSExpr() As Expression
-'    Set OperatorBinary_LHSExpr = m_LHS
-'End Property
-'
-'Private Property Get OperatorBinary_Rank() As OperatorRank
-'    OperatorBinary_Rank = myRank
-'End Property
-'
-'Private Property Get OperatorBinary_RHSExpr() As Expression
-'    Set OperatorBinary_RHSExpr = m_RHS
-'End Property
-'
-'Private Property Set OperatorBinary_RHSExpr(ByVal RHS As Expression)
-'    Set m_RHS = RHS
-'End Property
-'
+
+

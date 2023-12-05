@@ -6,62 +6,58 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ExprOpCub"
+Attribute VB_Name = "ExprOpBolAnd"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Implements Expression
-'
+
 Private m_LHS As Expression
-Private m_RHS As Expression '
-Private Const myRank As Long = OperatorRank.Rank6ExprOpPow
-Private Const myOp   As String = "³"
+Private m_RHS As Expression
+Private Const myRank As Long = OperatorRank.Rank2ExprOpAddSubt
+Private Const myOp   As String = " And "
+
 '
-Private Sub Class_Initialize():    Set m_RHS = MNew.ExprLitNum(3): End Sub
-Friend Sub New_(aLHS As Expression)
-    Set m_LHS = aLHS
+Friend Sub New_(aLHS As Expression, aRHS As Expression)
+    Set m_LHS = aLHS:   Set m_RHS = aRHS
 End Sub
 
 ' v ############################## v '   Implements Expression    ' v ############################## v '
 Private Property Get Expression_CanEval() As Boolean
-    If m_LHS Is Nothing Then Exit Property
     '
-    Expression_CanEval = m_LHS.CanEval
+    '
+    Expression_CanEval = True
 End Property
 
 Private Function Expression_Eval()
-Try: On Error GoTo Catch
-    If Not Expression_CanEval Then Exit Function
-    Expression_Eval = m_LHS.Eval ^ 3
-    Exit Function
-Catch:
-    MsgBox Err.number & " " & Err.Description
+    '
+    Expression_Eval = m_Value
 End Function
 
 
 Private Property Set Expression_Expr1(ByVal RHS As Expression)
-    Set m_LHS = RHS
+    '
 End Property
 Private Property Get Expression_Expr1() As Expression
-    Set Expression_Expr1 = m_LHS
+    '
 End Property
 
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
-    Set m_RHS = RHS
+    '
 End Property
 Private Property Get Expression_Expr2() As Expression
-    Set Expression_Expr2 = m_RHS
+    '
 End Property
 
 
 Private Property Get Expression_Operator1() As String
-    Expression_Operator1 = " ^ "
+    '
 End Property
 Private Property Get Expression_Operator2() As String
-    Expression_Operator2 = myOp
+    '
 End Property
 
 
@@ -70,10 +66,7 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-'    Dim b As Boolean: b = myRank <= ParentRank 'And ParentRank = OperatorRank.Rank7ExprOpBrac
-'    Dim s As String:  s = myOp
-'    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
-'    'If Not m_LHS Is Nothing Then s = m_LHS.ToStr(myRank) & s '& " = " & Trim(Str(Expression_Eval))
-'    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpCubToStr(Me, ParentRank)
+    Expression_ToStr = Trim(Str(m_Value))
 End Function
+
+

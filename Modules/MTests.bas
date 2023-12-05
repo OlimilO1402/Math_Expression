@@ -1,138 +1,17 @@
 Attribute VB_Name = "MTests"
 Option Explicit
-Private m_col As Collection
-
-Public Sub Test1()
-    Dim ex As Expression
-    Set ex = MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(12), MNew.ExprLitNum(25)), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(32)))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpMul(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(12), MNew.ExprLitNum(25))), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(32)))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpPow(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(51)))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpPow(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3))), MNew.ExprOpSubt(MNew.ExprLitNum(54), MNew.ExprLitNum(51)))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpCub(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpCub(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpAdd(MNew.ExprLitNum(2), MNew.ExprLitNum(3)))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    Dim op As Expression 'OperatorBinary
-    Dim op1 As Expression 'OperatorBinary
-    Dim op2 As Expression 'OperatorBinary
-    
-    Set op1 = MNew.OpBinAdd(MNew.ExprLitNum(3))
-    Set op1.Expr2 = MNew.ExprLitNum(4)
-    
-    Set op2 = MNew.OpBinAdd(MNew.ExprLitNum(5))
-    Set op2.Expr2 = MNew.ExprLitNum(6)
-    
-    Set op = MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))
-    Set op.Expr2 = op2
-    
-    Set ex = MNew.ExprOpBrac(MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    Set ex = MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    Set ex = MNew.ExprOpSqr(op)
-    MsgBox ex.ToStr & " = " & ex.Eval
-    Set ex = MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6))))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    Set ex = MNew.ExprOpSqrt(MNew.ExprOpCub(MNew.ExprOpSqr(MNew.ExprOpBrac(MNew.ExprOpMul(MNew.ExprOpAdd(MNew.ExprLitNum(3), MNew.ExprLitNum(4)), MNew.ExprOpAdd(MNew.ExprLitNum(5), MNew.ExprLitNum(6)))))))
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-End Sub
-
-Public Sub Test2()
-    Dim ex As Expression
-    Set ex = MNew.ExprLitNum(1.23)
-    Set ex = MNew.ExprOp1DivX(ex)
-    Set ex = MNew.ExprOpAdd(ex, MNew.ExprLitNum(4.56))
-    Set ex = MNew.ExprOpBrac(ex)
-    Set ex = MNew.ExprOpCub(ex)
-    Set ex = MNew.ExprOpDiv(ex, MNew.ExprLitNum(-7.89))
-    Set ex = MNew.ExprOpAbs(ex)
-    Set ex = MNew.ExprOpFact(ex)
-    Set ex = MNew.ExprOpLN(ex)
-    Set ex = MNew.ExprOpLog10(ex)
-    Set ex = MNew.ExprOpMul(ex, MNew.ExprLitNum(8.9))
-    Set ex = MNew.ExprOpNeg(ex)
-    Set ex = MNew.ExprOpPow(ex, MNew.ExprLitNum(2))
-    Set ex = MNew.ExprOpPow10(ex)
-    Set ex = MNew.ExprOpSqrt(ex)
-    Set ex = MNew.ExprOpSqr(ex)
-    Set ex = MNew.ExprOpSubt(ex, MNew.ExprOpPow10(MNew.ExprLitNum(209)))
-    'MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprLitNum(12)
-    Set ex = MNew.ExprOpSubt(ex, MNew.ExprLitNum(6))
-    Set ex = MNew.ExprOpSqrt(ex)
-    Set ex = MNew.ExprOpSqr(ex)
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprLitNum(12)
-    Set ex = MNew.ExprOpBrac(ex)
-    Set ex = MNew.ExprOpSubt(ex, MNew.ExprLitNum(6))
-    Set ex = MNew.ExprOpBrac(ex)
-    Set ex = MNew.ExprOpSqr(ex)
-    Set ex = MNew.ExprOpBrac(ex)
-    Set ex = MNew.ExprOpSqrt(ex)
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprLitNum(12)
-    Set ex = MNew.ExprOpSqr(ex)
-    Set ex = MNew.ExprOpCub(ex)
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-    Set ex = MNew.ExprLitNum(12)
-    Set ex = MNew.ExprOpCub(ex)
-    Set ex = MNew.ExprOpSqr(ex)
-    MsgBox ex.ToStr & " = " & ex.Eval
-    
-End Sub
+Private m_Col As Collection
 
 Public Function Test3(Fmt As FormatExpr) As String
     
-'    Dim FR As FormatRPN: Set FR = New FormatRPN
-'
-'    Dim ex As Expression
-'
-'    Dim ex1 As Expression: Set ex1 = MNew.ExprOpAdd(MNew.ExprLitNum(1), MNew.ExprLitNum(2))
-'    Dim ex2 As Expression: Set ex2 = MNew.ExprOpSubt(MNew.ExprLitNum(4), MNew.ExprLitNum(3))
-'
-'    Set ex = MNew.ExprOpAdd(ex1, ex2)
-'    MsgBox ex.ToStr(FA) & " = " & ex.Eval
-'    'MsgBox ex.ToStr(FR) & " = " & ex.Eval
-'
-'    Set ex = MNew.ExprOpSubt(ex1, ex2)
-'    MsgBox ex.ToStr(FA) & " = " & ex.Eval
-'    'MsgBox ex.ToStr(FR) & " = " & ex.Eval
-'
-'    Set ex = MNew.ExprOpMul(ex1, ex2)
-'    MsgBox ex.ToStr(FA) & " = " & ex.Eval
-'    'MsgBox ex.ToStr(FR) & " = " & ex.Eval
-'
-'    Set ex = MNew.ExprOpDiv(ex1, ex2)
-'    MsgBox ex.ToStr(FA) & " = " & ex.Eval
-'    'MsgBox ex.ToStr(FR) & " = " & ex.Eval
-    'Dim FA As FormatAlg: Set FA = MNew.FormatAlg(True)
     Dim forExcel As Boolean: forExcel = True
-    Set m_col = GetListOfBinaryExpressions
+    Set m_Col = GetListOfBinaryExpressions
     Dim s As String, i As Long
     Dim ex As Expression
-    For i = 1 To m_col.Count
-        Set ex = m_col.Item(i)
+    For i = 1 To m_Col.Count
+        Set ex = m_Col.Item(i)
         If forExcel Then s = s & "="
+        'Debug.Print i
         s = s & ex.ToStr(Fmt) & vbCrLf
     Next
     Test3 = s
@@ -141,7 +20,7 @@ End Function
 ' OK eine Testroutine mit allen Operatoren
 ' '
 Public Function GetListOfBinaryExpressions() As Collection
-    Dim n As Long: n = 10
+    Dim n As Long: n = 17
     Dim exList As New Collection
     Dim ex1 As Expression: Set ex1 = MNew.ExprLitNum(2)
     Dim ex2 As Expression: Set ex2 = MNew.ExprLitNum(3)
@@ -165,11 +44,17 @@ Public Function GetListOfBinaryExpressions() As Collection
 End Function
 
 Private Function GetEx(ByVal e As Long, exL As Expression, exR As Expression) As Expression
-    Static toggleAbs As Boolean
-    Static toggle1dx As Boolean
-    Static toggleBrc As Boolean
-    Static toggleSqr As Boolean
-    Static toggleCub As Boolean
+    Static toggleAbs  As Boolean
+    Static toggle1dx  As Boolean
+    Static toggleBrc  As Boolean
+    Static toggleSqr  As Boolean
+    Static toggleCub  As Boolean
+    Static toggleFac  As Boolean
+    Static toggleSqrt As Boolean
+    Static toggleLN   As Boolean
+    Static toggleLg10 As Boolean
+    Static toggleLgN  As Boolean
+    Static ToggleNeg  As Boolean
     Select Case e
     Case 1:  Set GetEx = MNew.ExprOpAdd(exL, exR)
     Case 2:  Set GetEx = MNew.ExprOpSubt(exL, exR)
@@ -181,7 +66,13 @@ Private Function GetEx(ByVal e As Long, exL As Expression, exR As Expression) As
     Case 8:  toggleSqr = Not toggleSqr: If toggleSqr Then Set GetEx = MNew.ExprOpSqr(exL) Else Set GetEx = MNew.ExprOpSqr(exR)
     Case 9:  toggleCub = Not toggleCub: If toggleCub Then Set GetEx = MNew.ExprOpCub(exL) Else Set GetEx = MNew.ExprOpCub(exR)
     Case 10: Set GetEx = MNew.ExprOpPow(exL, exR)
-    
+    Case 11: toggleFac = Not toggleFac:   If toggleFac Then Set GetEx = MNew.ExprOpFact(exL) Else Set GetEx = MNew.ExprOpFact(exR)
+    Case 12: toggleSqrt = Not toggleSqrt: If toggleSqrt Then Set GetEx = MNew.ExprOpSqrt(exL) Else Set GetEx = MNew.ExprOpSqrt(exR)
+    Case 13: toggleLN = Not toggleLN:     If toggleLN Then Set GetEx = MNew.ExprOpLN(exL) Else Set GetEx = MNew.ExprOpLN(exR)
+    Case 14: toggleLg10 = Not toggleLg10: If toggleLg10 Then Set GetEx = MNew.ExprOpLog10(exL) Else Set GetEx = MNew.ExprOpLog10(exR)
+    Case 15: toggleLgN = Not toggleLgN:   If toggleLgN Then Set GetEx = MNew.ExprOpLogN(exL) Else Set GetEx = MNew.ExprOpLogN(exR)
+    Case 16: Set GetEx = MNew.ExprOpLogN(exL, exR)
+    Case 17: ToggleNeg = Not ToggleNeg:  If ToggleNeg Then Set GetEx = MNew.ExprOpNeg(exL) Else Set GetEx = MNew.ExprOpNeg(exR)
     End Select
 End Function
 
@@ -190,10 +81,11 @@ Sub TestVBCode()
 End Sub
 
 Public Function GetResults() As String
+    If m_Col Is Nothing Then Set m_Col = GetListOfBinaryExpressions
     Dim s As String, i As Long
     Dim ex As Expression
-    For i = 1 To m_col.Count
-        Set ex = m_col.Item(i)
+    For i = 1 To m_Col.Count
+        Set ex = m_Col.Item(i)
         s = s & ex.Eval & vbCrLf
     Next
     GetResults = s

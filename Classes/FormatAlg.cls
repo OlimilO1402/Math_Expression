@@ -25,6 +25,10 @@ Public Property Get Condensed() As Boolean
     Condensed = m_Condensed
 End Property
 
+Public Property Get XLCompatible() As Boolean
+    XLCompatible = m_XLCmpatbl
+End Property
+
 ' v ############################## v '    Implements FormatExpr    ' v ############################## v '
 Private Function FormatExpr_ExprLitNumToStr(aLit As ExprLitNum, Optional ByVal ParentRank As OperatorRank = 0&) As String
     FormatExpr_ExprLitNumToStr = Trim(Str(aLit.Value))
@@ -111,12 +115,12 @@ End Function
 
 'for operator unary associative left: -x
 Private Function FormatExpr_ExprOpUnaAsLToStr(aOpUnAsL As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    With aOpDiv
+    With aOpUnAsL
         Dim r As OperatorRank: r = .Rank
         Dim s As String:       s = .Operator1: If m_Condensed Then s = Trim(s)
         Dim RHS As Expression: Set RHS = .Expr2
     End With
-    Dim b As Boolean: b = r < ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
+    Dim b As Boolean: b = r <= ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
     If Not RHS Is Nothing Then s = IIf(b, "(", "") & s & RHS.ToStr(Me, r) & IIf(b, ")", "")
     FormatExpr_ExprOpUnaAsLToStr = s
 End Function
@@ -128,7 +132,8 @@ Private Function FormatExpr_ExprOpUnaAsRToStr(aOpUnAsR As Expression, Optional B
         Dim s As String:       s = .Operator1: If m_Condensed Then s = Trim(s)
         Dim LHS As Expression: Set LHS = .Expr1
     End With
-    Dim b As Boolean: b = ParentRank <> OperatorRank.Rank9ExprOpBrac And ParentRank <> OperatorRank.Rank0None
+    'Dim b As Boolean: b = ParentRank < OperatorRank.Rank9ExprOpBrac And ParentRank <> OperatorRank.Rank0None
+    Dim b As Boolean: b = r < ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
     'Dim s As String:  s = myOp
     If Not LHS Is Nothing Then s = IIf(b, "(", "") & LHS.ToStr(Me, r) & s & IIf(b, ")", "")
     'If Not m_LHS Is Nothing Then s = m_LHS.ToStr(myRank) & s '& " = " & Trim(Str(Expression_Eval))
@@ -154,25 +159,89 @@ Private Function FormatExpr_ExprOpBracToStr(aOpUnaAsLR As Expression, Optional B
     FormatExpr_ExprOpBracToStr = s
 End Function
 
-Private Function FormatExpr_ExprFunctionToStr(aFunc As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+Private Function FormatExpr_ExprFunctionToStr(aFunc As ExprFunction, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    'more than 2 params
     With aFunc
         Dim r As OperatorRank: r = .Rank
         Dim s As String:       s = .Operator1: If m_Condensed Then s = Trim(s)
-        Dim Ins As Expression: Set Ins = .Expr1
     End With
-    Dim FuncName As String
-    If Len(s) Then FuncName = s
-    If FuncName = "(" Or FuncName = ")" Then Exit Function
-    If Right(FuncName, 1) = ")" Then FuncName = Left(FuncName, Len(FuncName) - 1)
-    If Right(FuncName, 1) = "(" Then FuncName = Left(FuncName, Len(FuncName) - 1)
-    If Not Ins Is Nothing Then s = FuncName & "(" & Ins.ToStr(Me, r) & ")" 's2 & IIf(b, ")", "")
-    FormatExpr_ExprFunctionToStr = s
+    Dim FuncName As String: FuncName = GetFuncName(s)
+    Dim sParams As String: sParams = GetParamsList(aFunc.params)
+    FormatExpr_ExprFunctionToStr = FuncName & "(" & sParams & ")"
+End Function
+
+Private Function GetParamsList(col As Collection, ByVal ParentRank As OperatorRank) As String
+    Dim s As String, sp As String, sep As String: sep = GetFuncParamSep
+    Dim i As Long, c As Long: c = col.Count
+    Dim v, FuncParam As Expression
+    For Each v In col
+        i = i + 1
+        Set FuncParam = v
+        sp = FuncParam.ToStr(Me, ParentRank)
+        s = s & sp
+        If i < c Then s = s & sep
+    Next
+End Function
+
+Private Function GetFuncParamSep() As String
+    GetFuncParamSep = IIf(m_XLCmpatbl, "; ", ", ")
+    If m_Condensed Then GetFuncParamSep = Trim(GetFuncParamSep)
+End Function
+
+Private Function GetFuncName(ByVal s As String) As String
+    If Len(s) = 0 Then Exit Function
+    If s = "(" Or s = ")" Then Exit Function
+    If Right(s, 1) = ")" Then s = Left(s, Len(s) - 1)
+    If Right(s, 1) = "(" Then s = Left(s, Len(s) - 1)
+    GetFuncName = s
+End Function
+
+Private Function FormatExpr_ExprFunction2ToStr(aFunc As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    'max 2 params
+    With aFunc
+        Dim r As OperatorRank: r = .Rank
+        Dim s As String:       s = .Operator1: If m_Condensed Then s = Trim(s)
+        Dim LHS As Expression: Set LHS = .Expr1
+        Dim RHS As Expression: Set RHS = .Expr2
+    End With
+    Dim FuncName As String: FuncName = GetFuncName(s)
+    s = FuncName & "("
+    Dim sParams As String
+    If Not LHS Is Nothing Then sParams = LHS.ToStr(Me, r)
+    If Not RHS Is Nothing Then sParams = sParams & IIf(Len(sParams), GetFuncParamSep, "") & RHS.ToStr(Me, r)
+    FormatExpr_ExprFunction2ToStr = s & sParams & ")"
 End Function
 
 Private Function FormatExpr_ExprFuncAbsToStr(aExprAbs As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
     If m_XLCmpatbl Then
-        FormatExpr_ExprFuncAbsToStr = FormatExpr_ExprFunctionToStr(MNew.ExprFunction("Abs", Nothing, aExprAbs.Expr1), ParentRank)
+        FormatExpr_ExprFuncAbsToStr = FormatExpr_ExprFunction2ToStr(MNew.ExprFunction("Abs", Nothing, aExprAbs.Expr1), ParentRank)
         Exit Function
     End If
-    FormatExpr_ExprFuncAbsToStr = FormatExpr_ExprOpUnaAsLRToStr(aExprAbs, ParentRank)
+    FormatExpr_ExprFuncAbsToStr = FormatExpr_ExprOpBracToStr(aExprAbs, ParentRank)
 End Function
+
+Private Function FormatExpr_ExprOpFactToStr(aOpFact As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    If m_XLCmpatbl Then
+        FormatExpr_ExprOpFactToStr = FormatExpr_ExprFunction2ToStr(MNew.ExprFunction("Fakultät", Nothing, aOpFact.Expr1), ParentRank)
+        Exit Function
+    End If
+    FormatExpr_ExprOpFactToStr = FormatExpr_ExprOpUnaAsRToStr(aOpFact, ParentRank)
+End Function
+
+Private Function FormatExpr_ExprOpSqrtToStr(aOpSqrt As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    If m_XLCmpatbl Then
+        FormatExpr_ExprOpSqrtToStr = FormatExpr_ExprFunction2ToStr(MNew.ExprFunction("Wurzel", Nothing, aOpSqrt.Expr2), ParentRank)
+        Exit Function
+    End If
+    FormatExpr_ExprOpSqrtToStr = FormatExpr_ExprOpUnaAsLToStr(aOpSqrt, ParentRank)
+End Function
+
+Private Function FormatExpr_ExprOpIIfToStr(aOpIIf As ExprOpIIf, Optional ByVal ParentRank As OperatorRank = 0&) As String
+    Dim ex As Expression: Set ex = aOpIIf
+    Dim FuncName As String: FuncName = IIf(m_XLCmpatbl, "Wenn", ex.Operator1)
+    Dim exFunc As ExprFunction: Set exFunc = MNew.ExprFunction(FuncName, Nothing)
+    exFunc.params.Add aOpIIf.Condition
+    exFunc.params.Add ex.Expr1:    exFunc.params.Add ex.Expr2
+    FormatExpr_ExprOpIIfToStr = FormatExpr_ExprFunctionToStr(exFunc, ParentRank)
+End Function
+

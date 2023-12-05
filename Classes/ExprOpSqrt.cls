@@ -32,21 +32,30 @@ Private Property Get Expression_CanEval() As Boolean
 End Property
 
 Private Function Expression_Eval()
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = Math.Sqr(m_RHS.Eval)
+    Exit Function
+Catch:
+    MsgBox Err.number & " " & Err.Description
 End Function
 
-Private Property Get Expression_Expr1() As Expression
-    '
-End Property
 
-Private Property Get Expression_Expr2() As Expression
+Private Property Set Expression_Expr1(ByVal RHS As Expression)
+    Set m_RHS = RHS
+End Property
+Private Property Get Expression_Expr1() As Expression
     Set Expression_Expr1 = m_RHS
 End Property
+
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
     Set m_RHS = RHS
 End Property
+Private Property Get Expression_Expr2() As Expression
+    Set Expression_Expr2 = m_RHS
+End Property
+
 
 Private Property Get Expression_Operator1() As String
     Expression_Operator1 = myOp
@@ -61,10 +70,12 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    Dim b As Boolean: b = myRank <= ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
-    Dim s As String:  s = myOp
-    'If Not m_RHS Is Nothing Then s = s & "(" & m_RHS.ToStr(myRank) & ")" '& " = " & Trim(Str(Expression_Eval))
-    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & s & m_RHS.ToStr(myRank) & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
-    Expression_ToStr = s
+    Expression_ToStr = Fmt.ExprOpSqrtToStr(Me, ParentRank)
 End Function
+
+'    Dim b As Boolean: b = myRank <= ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
+'    Dim s As String:  s = myOp
+'    'If Not m_RHS Is Nothing Then s = s & "(" & m_RHS.ToStr(myRank) & ")" '& " = " & Trim(Str(Expression_Eval))
+'    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & s & m_RHS.ToStr(Fmt, myRank) & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
+'    Expression_ToStr = s
 

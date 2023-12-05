@@ -16,10 +16,10 @@ Implements Expression
 '
 Private m_LHS As Expression
 Private m_RHS As Expression
-Private Const myRank As Long = OperatorRank.Rank5ExprOpDivisor
+Private Const myRank As Long = OperatorRank.Rank4ExprOpMulDiv
 Private Const myOp   As String = " / "
-Private Sub Class_Initialize():    Set m_LHS = MNew.ExprLitNum(1): End Sub
 
+Private Sub Class_Initialize():    Set m_LHS = MNew.ExprLitNum(1): End Sub
 Friend Sub New_(aRHS As Expression)
     Set m_RHS = aRHS
 End Sub
@@ -32,26 +32,36 @@ Private Property Get Expression_CanEval() As Boolean
 End Property
 
 Private Function Expression_Eval() 'As Double
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
+    'Dim r As Double: r = m_RHS.Eval
+    'If r = 0 Then MsgBox "Error undefined division: 0": Exit Function
     Expression_Eval = 1 / m_RHS.Eval
+    Exit Function
+Catch:
+    MsgBox Err.number & " " & Err.Description
 End Function
 
+
+Private Property Set Expression_Expr1(ByVal RHS As Expression)
+    Set m_LHS = RHS
+End Property
 Private Property Get Expression_Expr1() As Expression
     Set Expression_Expr1 = m_LHS
 End Property
 
-Private Property Get Expression_Expr2() As Expression
-    Set Expression_Expr2 = m_RHS
-End Property
 
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
     Set m_RHS = RHS
 End Property
+Private Property Get Expression_Expr2() As Expression
+    Set Expression_Expr2 = m_RHS
+End Property
+
 
 Private Property Get Expression_Operator1() As String
     Expression_Operator1 = myOp
 End Property
-
 Private Property Get Expression_Operator2() As String
     '
 End Property

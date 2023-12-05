@@ -19,8 +19,12 @@ Public Function ExprOpDivToStr(aOpDiv As Expression, Optional ByVal ParentRank A
 Public Function ExprOpUnaAsLToStr(aOpUnAsL As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:  End Function
 Public Function ExprOpUnaAsRToStr(aOpUnAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:  End Function
 Public Function ExprOpBracToStr(aOpUnAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:    End Function
-Public Function ExprFunctionToStr(aFunc As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:     End Function
+Public Function ExprFunctionToStr(aFunc As ExprFunction, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:   End Function
+Public Function ExprFunction2ToStr(aFunc As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:    End Function
 Public Function ExprFuncAbsToStr(aExprAbs As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:   End Function
 Public Function ExprOpCubToStr(aOpCub As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
 Public Function ExprOpSqrToStr(aOpSqr As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
 Public Function ExprOpPowToStr(aOpPow As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
+Public Function ExprOpFactToStr(aOpFact As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:     End Function
+Public Function ExprOpSqrtToStr(aOpSqrt As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:     End Function
+Public Function ExprOpIIfToStr(aOpIIf As ExprOpIIf, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String:       End Function
