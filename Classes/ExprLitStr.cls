@@ -17,7 +17,7 @@ Implements Expression
 Private m_Value As String
 '
 Private Const myRank As Long = OperatorRank.Rank1ExprConst
-'
+
 '
 Friend Sub New_(aValue)
     m_Value = aValue
@@ -29,6 +29,10 @@ Private Property Get Expression_CanEval() As Boolean
     '
     '
     Expression_CanEval = True
+End Property
+
+Private Property Get Expression_ErrInfo() As String
+    '
 End Property
 
 Private Function Expression_Eval()

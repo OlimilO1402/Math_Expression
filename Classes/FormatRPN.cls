@@ -100,7 +100,7 @@ Private Function FormatExpr_ExprFunction2ToStr(aFunc As Expression, Optional ByV
     If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
     If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
     s = s & sOp '& m_Sep
-    FormatExpr_ExprFunctionToStr = s
+    FormatExpr_ExprFunction2ToStr = s
 End Function
 
 Private Function FormatExpr_ExprFuncAbsToStr(aExprAbs As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
@@ -117,11 +117,11 @@ Private Function FormatExpr_ExprFuncAbsToStr(aExprAbs As Expression, Optional By
 End Function
 
 Private Function FormatExpr_ExprOpIIfToStr(aOpIIf As ExprOpIIf, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    Dim ex As Expression: Set ex = aOpIIf
-    Dim FuncName As String: FuncName = IIf(m_XLCmpatbl, "Wenn", ex.Operator1)
-    Dim exFunc As ExprFunction: Set exFunc = MNew.ExprFunction(FuncName, Nothing)
-    exFunc.params.Add aOpIIf.Condition
-    exFunc.params.Add ex.Expr1:    exFunc.params.Add ex.Expr2
-    Expression_ToStr = Fmt.ExprFunctionToStr(exFunc, ParentRank)
+'    Dim ex As Expression: Set ex = aOpIIf
+'    Dim FuncName As String: FuncName = IIf(m_XLCompatbl, "Wenn", ex.Operator1)
+'    Dim exFunc As ExprFunction: Set exFunc = MNew.ExprFunction(FuncName, Nothing)
+'    exFunc.params.Add aOpIIf.Condition
+'    exFunc.params.Add ex.Expr1:    exFunc.params.Add ex.Expr2
+'    Expression_ToStr = Fmt.ExprFunctionToStr(exFunc, ParentRank)
 End Function
 

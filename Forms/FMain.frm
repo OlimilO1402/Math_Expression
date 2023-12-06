@@ -802,7 +802,10 @@ Private m_TBHasResult As Boolean
 'gib ein
 
 Private Sub BtnTests_Click()
-    Text1.Text = MTests.Test3(GetFormat)
+    Dim s As String
+    s = MTests.Test3(GetFormat)
+    Clipboard.SetText s
+    Text1.Text = s
 End Sub
 
 Private Sub BtnGetResults_Click()
@@ -827,19 +830,23 @@ Private Sub Command1_Click()
 '    Dim ex As Expression: Set ex = fnc
 '    MsgBox ex.Eval
     
-    Dim ex As Expression
-    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+'    Dim ex As Expression
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitNum(True), MNew.ExprLitBol(False))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(True), MNew.ExprLitBol(False))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
+'    MsgBox ex.Eval
+
+    Dim ex As Expression: Set ex = MNew.ExprOpLogN(MNew.ExprLitNum(-5), MNew.ExprOpDiv(MNew.ExprLitNum(3), MNew.ExprLitNum(1)))
     MsgBox ex.Eval
-    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitNum(True), MNew.ExprLitBol(False))
-    MsgBox ex.Eval
-    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
-    MsgBox ex.Eval
-    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(True), MNew.ExprLitBol(False))
-    MsgBox ex.Eval
-    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
-    MsgBox ex.Eval
-    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
-    MsgBox ex.Eval
+    MsgBox ex.ErrInfo
 End Sub
 
 Private Sub Form_Load()

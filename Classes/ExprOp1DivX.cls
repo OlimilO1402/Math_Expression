@@ -18,6 +18,7 @@ Private m_LHS As Expression
 Private m_RHS As Expression
 Private Const myRank As Long = OperatorRank.Rank4ExprOpMulDiv
 Private Const myOp   As String = " / "
+Private m_ErrInfo As String
 
 Private Sub Class_Initialize():    Set m_LHS = MNew.ExprLitNum(1): End Sub
 Friend Sub New_(aRHS As Expression)
@@ -31,15 +32,19 @@ Private Property Get Expression_CanEval() As Boolean
     Expression_CanEval = m_RHS.CanEval
 End Property
 
+Private Property Get Expression_ErrInfo() As String
+    Dim s1 As String: s1 = m_LHS.ErrInfo: s1 = s1 & IIf(Len(s1), vbCrLf, "")
+    Dim s2 As String: s2 = m_RHS.ErrInfo: s2 = s2 & IIf(Len(s2), vbCrLf, "")
+    Expression_ErrInfo = s1 & s2 & IIf(Len(m_ErrInfo), TypeName(Me) & " ", "") & m_ErrInfo
+End Property
+
 Private Function Expression_Eval() 'As Double
 Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
-    'Dim r As Double: r = m_RHS.Eval
-    'If r = 0 Then MsgBox "Error undefined division: 0": Exit Function
     Expression_Eval = 1 / m_RHS.Eval
     Exit Function
 Catch:
-    MsgBox Err.number & " " & Err.Description
+    m_ErrInfo = Err.number & " " & Err.Description
 End Function
 
 

@@ -18,7 +18,8 @@ Private m_ExprTrue   As Expression
 Private m_ExprFalse  As Expression
 Private Const myOp   As String = "IIf"
 Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
-'
+Private m_ErrInfo As String
+
 '
 Friend Sub New_(aCond As Expression, Optional ExprTrue As Expression = Nothing, Optional ExprFalse As Expression = Nothing)
     Set m_Condition = aCond: Set m_ExprTrue = ExprTrue:                Set m_ExprFalse = ExprFalse
@@ -40,13 +41,24 @@ Private Property Get Expression_CanEval() As Boolean
     Expression_CanEval = m_Condition.CanEval And m_ExprTrue.CanEval And m_ExprFalse.CanEval
 End Property
 
+Private Property Get Expression_ErrInfo() As String
+    Dim s1 As String: s1 = m_Condition.ErrInfo: s1 = s1 & IIf(Len(s1), vbCrLf, "")
+    Dim s2 As String: s2 = m_ExprTrue.ErrInfo:  s2 = s2 & IIf(Len(s2), vbCrLf, "")
+    Dim s3 As String: s3 = m_ExprFalse.ErrInfo: s3 = s3 & IIf(Len(s3), vbCrLf, "")
+    Expression_ErrInfo = s1 & s2 & s3 & IIf(Len(m_ErrInfo), TypeName(Me) & " ", "") & m_ErrInfo
+End Property
+
 Private Function Expression_Eval()
+Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     If m_Condition.Eval Then
         Expression_Eval = m_ExprTrue.Eval
     Else
         Expression_Eval = m_ExprFalse.Eval
     End If
+    Exit Function
+Catch:
+    m_ErrInfo = Err.number & " " & Err.Description
 End Function
 
 

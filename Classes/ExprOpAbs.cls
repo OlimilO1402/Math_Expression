@@ -19,6 +19,7 @@ Private m_Ins As Expression
 Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
 Private Const myOp1  As String = "| "
 Private Const myOp2  As String = " |"
+Private m_ErrInfo As String
 
 Friend Sub New_(aIns As Expression)
     Set m_Ins = aIns
@@ -35,13 +36,18 @@ Private Property Get Expression_CanEval() As Boolean
     Expression_CanEval = m_Ins.CanEval
 End Property
 
+Private Property Get Expression_ErrInfo() As String
+    Dim s1 As String: s1 = m_Ins.ErrInfo: s1 = s1 & IIf(Len(s1), vbCrLf, "")
+    Expression_ErrInfo = s1 & IIf(Len(m_ErrInfo), TypeName(Me) & " ", "") & m_ErrInfo
+End Property
+
 Private Function Expression_Eval() 'As Double
 Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = VBA.Math.Abs(m_Ins.Eval)
     Exit Function
 Catch:
-    MsgBox Err.number & " " & Err.Description
+    m_ErrInfo = Err.number & " " & Err.Description
 End Function
 
 

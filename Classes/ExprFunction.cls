@@ -19,6 +19,8 @@ Private m_Params As Collection 'Of Expression
 Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
 Private m_FncName As String
 Private m_Object  As Object
+Private m_ErrInfo As String
+
 Private Sub Class_Initialize():    Set m_Params = New Collection: End Sub
 Friend Sub New_(aFuncName As String, CallableObject As Object, Optional ExprInside As Expression = Nothing)
     m_FncName = aFuncName: Set m_Object = CallableObject: If Not ExprInside Is Nothing Then m_Params.Add ExprInside
@@ -43,6 +45,10 @@ Private Property Get Expression_CanEval() As Boolean
         Set ex = v: If Not ex.CanEval Then Exit Property
     Next
     Expression_CanEval = True
+End Property
+
+Private Property Get Expression_ErrInfo() As String
+    Expression_ErrInfo = IIf(Len(m_ErrInfo), TypeName(Me) & " ", "") & m_ErrInfo
 End Property
 
 Private Function Expression_Eval() 'As Double
@@ -85,7 +91,7 @@ Try: On Error GoTo Catch
     End If
     Exit Function
 Catch:
-    MsgBox Err.number & " " & Err.Description
+    m_ErrInfo = Err.number & " " & Err.Description
 End Function
 
 Private Property Set Expression_Expr1(ByVal RHS As Expression)

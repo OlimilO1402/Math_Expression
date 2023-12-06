@@ -161,12 +161,13 @@ End Function
 
 Private Function FormatExpr_ExprFunctionToStr(aFunc As ExprFunction, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
     'more than 2 params
-    With aFunc
+    Dim ex As Expression: Set ex = aFunc
+    With ex
         Dim r As OperatorRank: r = .Rank
         Dim s As String:       s = .Operator1: If m_Condensed Then s = Trim(s)
     End With
     Dim FuncName As String: FuncName = GetFuncName(s)
-    Dim sParams As String: sParams = GetParamsList(aFunc.params)
+    Dim sParams  As String:  sParams = GetParamsList(aFunc.params, ParentRank)
     FormatExpr_ExprFunctionToStr = FuncName & "(" & sParams & ")"
 End Function
 

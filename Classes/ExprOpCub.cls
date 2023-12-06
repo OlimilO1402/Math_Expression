@@ -18,7 +18,8 @@ Private m_LHS As Expression
 Private m_RHS As Expression '
 Private Const myRank As Long = OperatorRank.Rank6ExprOpPow
 Private Const myOp   As String = "³"
-'
+Private m_ErrInfo As String
+
 Private Sub Class_Initialize():    Set m_RHS = MNew.ExprLitNum(3): End Sub
 Friend Sub New_(aLHS As Expression)
     Set m_LHS = aLHS
@@ -31,13 +32,19 @@ Private Property Get Expression_CanEval() As Boolean
     Expression_CanEval = m_LHS.CanEval
 End Property
 
+Private Property Get Expression_ErrInfo() As String
+    Dim s1 As String: s1 = m_LHS.ErrInfo: s1 = s1 & IIf(Len(s1), vbCrLf, "")
+    Dim s2 As String: s2 = m_RHS.ErrInfo: s2 = s2 & IIf(Len(s2), vbCrLf, "")
+    Expression_ErrInfo = s1 & s2 & IIf(Len(m_ErrInfo), TypeName(Me) & " ", "") & m_ErrInfo
+End Property
+
 Private Function Expression_Eval()
 Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Expression_Eval = m_LHS.Eval ^ 3
     Exit Function
 Catch:
-    MsgBox Err.number & " " & Err.Description
+    m_ErrInfo = Err.number & " " & Err.Description
 End Function
 
 
