@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ExprLitStr"
+Attribute VB_Name = "ExprLitDat"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -14,15 +14,15 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements Expression
 
-Private m_Value As String
+Private m_Value As Date
 '
 Private Const myRank As Long = OperatorRank.Rank1ExprConst
 
 '
 Friend Sub New_(aValue)
-    m_Value = aValue
+    m_Value = CDate(aValue)
 End Sub
-Public Property Get Value():    Value = m_Value:    End Property
+Public Property Get Value() As Date:    Value = m_Value:    End Property
 
 ' v ############################## v '   Implements Expression    ' v ############################## v '
 Private Property Get Expression_CanEval() As Boolean
@@ -74,5 +74,7 @@ Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = Op
 End Function
 
 Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
-    Fmt.ExprLitStrToStr Me, ParentRank
+    Fmt.ExprLitDatToStr Me, ParentRank
 End Sub
+
+

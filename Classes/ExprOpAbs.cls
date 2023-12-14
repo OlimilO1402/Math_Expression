@@ -79,12 +79,12 @@ Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
-Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-'    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
-'    Dim s As String:  s = myOp
-'    If Not m_Ins Is Nothing Then s = IIf(b, "(", "") & s & m_Ins.ToStr(myRank) & myOp & IIf(b, ")", "")
-'    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprFuncAbsToStr(Me, ParentRank)
+Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    '
 End Function
+
+Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
+    Fmt.ExprFuncAbsToStr Me, ParentRank
+End Sub
 
 

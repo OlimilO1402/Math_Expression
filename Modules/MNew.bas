@@ -5,6 +5,7 @@ Public Enum OperatorRank
     'lowest rank
     Rank0None = 0
     Rank1ExprConst
+    Rank2ExprAndOrXOrNot
     Rank2ExprOpAddSubt
     Rank3ExprOpSubtrah
     Rank4ExprOpMulDiv
@@ -21,9 +22,35 @@ Public Function ExprLitBol(ByVal aValue As Boolean) As ExprLitBol 'can only be T
     Set ExprLitBol = New ExprLitBol: ExprLitBol.New_ aValue
 End Function
 
-Public Function ExprLitNum(ByVal aValue) As ExprLitNum            'any numeric value, int or float
+Public Function ExprLitDat(ByVal aValue As Boolean) As ExprLitDat 'Values of date and time
+    Set ExprLitBol = New ExprLitBol: ExprLitBol.New_ aValue
+End Function
+
+Public Function ExprLitNum(ByVal aValue) As ExprLitNum            'any numeric value, byte, int16, int32, int64, float32, float64
     Set ExprLitNum = New ExprLitNum: ExprLitNum.New_ aValue
 End Function
+
+Public Function ExprLitStr(ByVal aValue) As ExprLitStr            'string
+    Set ExprLitNum = New ExprLitNum: ExprLitNum.New_ aValue
+End Function
+
+' v ############################## v '    Boolean Operators    ' v ############################## v '
+Public Function ExprOpBolAnd(aLHS As Expression, aRHS As Expression) As ExprOpBolAnd
+    Set ExprOpBolAnd = New ExprOpBolAnd: ExprOpBolAnd.NewC LHS, RHS
+End Function
+
+Public Function ExprOpBolEqual(aLHS As Expression, aRHS As Expression) As ExprOpBolEqual
+    Set ExprOpBolEqual = New ExprOpBolEqual: ExprOpBolEqual.NewC LHS, RHS
+End Function
+
+Public Function ExprOpBolOr(aLHS As Expression, aRHS As Expression) As ExprOpBolOr
+    Set ExprOpBolOr = New ExprOpBolOr: ExprOpBolOr.NewC LHS, RHS
+End Function
+
+Public Function ExprOpBolXor(aLHS As Expression, aRHS As Expression) As ExprOpBolXor
+    Set ExprOpBolXor = New ExprOpBolXor: ExprOpBolXor.NewC LHS, RHS
+End Function
+
 
 ' v ############################## v '    Operators Binary    ' v ############################## v '
 '+

@@ -844,9 +844,22 @@ Private Sub Command1_Click()
 '    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitNum(123), MNew.ExprLitNum(456))
 '    MsgBox ex.Eval
 
-    Dim ex As Expression: Set ex = MNew.ExprOpLogN(MNew.ExprLitNum(-5), MNew.ExprOpDiv(MNew.ExprLitNum(3), MNew.ExprLitNum(1)))
-    MsgBox ex.Eval
-    MsgBox ex.ErrInfo
+    'Dim ex As Expression: Set ex = MNew.ExprOpLogN(MNew.ExprLitNum(-5), MNew.ExprOpDiv(MNew.ExprLitNum(3), MNew.ExprLitNum(1)))
+    'MsgBox ex.Eval
+    'MsgBox ex.ErrInfo
+    
+    Dim ex As Expression
+    
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitBol(True), MNew.ExprLitBol(False))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(True), MNew.ExprLitBol(False))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(True), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+'    MsgBox ex.Eval
+'    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
+'    MsgBox ex.Eval
+    
+    set ex = mnew.ExprOpIIf(mnew.expropbolequals
 End Sub
 
 Private Sub Form_Load()

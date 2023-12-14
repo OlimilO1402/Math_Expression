@@ -76,9 +76,14 @@ Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
-Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    Expression_ToStr = Fmt.ExprOpPowToStr(Me, ParentRank)
+Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    '
 End Function
+
+Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
+    Fmt.ExprOpPowToStr Me, ParentRank
+End Sub
+
     'hier werden 3 verschiedene Klammern gebraucht
     '((basis1 + basis2) ^ (expo1 + expo2))
     '1. die Klammer ganz auﬂen

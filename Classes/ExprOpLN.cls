@@ -79,9 +79,13 @@ Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
-Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    Expression_ToStr = Fmt.ExprFunction2ToStr(Me, ParentRank)
+Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    '
 End Function
+
+Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
+    Fmt.ExprOpLNToStr Me, ParentRank
+End Sub
 
 'number          |  base        | xl-function     | result | description
 '    7.389056099 |  2,718281828 | LN(Zahl)        =   2    | LN aka ln  := Logarithm to base  e

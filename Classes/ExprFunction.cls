@@ -55,34 +55,34 @@ Private Function Expression_Eval() 'As Double
 Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
     Dim c As Long: c = m_Params.Count
-    Dim Args(), ex As Expression
+    Dim args(), ex As Expression
     If c = 1 Then
-        ReDim Args(1 To 1)
-        Set ex = m_Params.Item(1): Args(0) = ex.Eval
+        ReDim args(1 To 1)
+        Set ex = m_Params.Item(1): args(0) = ex.Eval
     ElseIf c = 2 Then
-        ReDim Args(1 To 2)
-        Set ex = m_Params.Item(1): Args(0) = ex.Eval
-        Set ex = m_Params.Item(2): Args(1) = ex.Eval
+        ReDim args(1 To 2)
+        Set ex = m_Params.Item(1): args(0) = ex.Eval
+        Set ex = m_Params.Item(2): args(1) = ex.Eval
     Else
-        ReDim Args(1 To m_Params.Count)
+        ReDim args(1 To m_Params.Count)
         Dim i As Long
         For i = 1 To m_Params.Count
             Set ex = m_Params.Item(i)
             If Not ex Is Nothing Then
-                Args(i) = ex.Eval
+                args(i) = ex.Eval
             End If
         Next
     End If
     Dim Ret
     Select Case c
-    Case 1: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1))
-    Case 2: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2))
-    Case 3: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2), Args(3))
-    Case 4: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2), Args(3), Args(4))
-    Case 5: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2), Args(3), Args(4), Args(5))
-    Case 6: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2), Args(3), Args(4), Args(5), Args(6))
-    Case 7: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2), Args(3), Args(4), Args(5), Args(6), Args(7))
-    Case 8: Ret = CallByName(m_Object, m_FncName, VbMethod, Args(1), Args(2), Args(3), Args(4), Args(5), Args(6), Args(7), Args(8))
+    Case 1: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1))
+    Case 2: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2))
+    Case 3: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2), args(3))
+    Case 4: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2), args(3), args(4))
+    Case 5: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2), args(3), args(4), args(5))
+    Case 6: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2), args(3), args(4), args(5), args(6))
+    Case 7: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2), args(3), args(4), args(5), args(6), args(7))
+    Case 8: Ret = CallByName(m_Object, m_FncName, VbMethod, args(1), args(2), args(3), args(4), args(5), args(6), args(7), args(8))
     End Select
     If IsObject(Ret) Then
         Set Expression_Eval = Ret
@@ -137,9 +137,12 @@ Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
-Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    Expression_ToStr = Fmt.ExprFunctionToStr(Me, ParentRank)
+Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    '
 End Function
+Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
+    Fmt.ExprFunctionToStr Me, ParentRank
+End Sub
 
 
 

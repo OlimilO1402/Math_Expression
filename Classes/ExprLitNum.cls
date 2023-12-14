@@ -40,35 +40,40 @@ Private Function Expression_Eval()
     Expression_Eval = m_Value
 End Function
 
+
 Private Property Set Expression_Expr1(ByVal RHS As Expression)
     '
 End Property
-
 Private Property Get Expression_Expr1() As Expression
     '
 End Property
 
+
 Private Property Set Expression_Expr2(ByVal RHS As Expression)
     '
 End Property
-
 Private Property Get Expression_Expr2() As Expression
     '
 End Property
 
+
 Private Property Get Expression_Operator1() As String
     '
 End Property
-
 Private Property Get Expression_Operator2() As String
     '
 End Property
+
 
 Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
-Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    Expression_ToStr = Fmt.ExprLitNumToStr(Me, ParentRank) ' Trim(Str(m_Value))
+Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    '
 End Function
+
+Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
+    Fmt.ExprLitNumToStr Me, ParentRank
+End Sub
 

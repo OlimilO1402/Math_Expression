@@ -4,15 +4,17 @@ Private m_Col As Collection
 
 Public Function Test3(Fmt As FormatExpr) As String
     
-    Dim forExcel As Boolean: forExcel = True
+    'Dim forExcel As Boolean: forExcel = True
     Set m_Col = GetListOfBinaryExpressions
-    Dim s As String, i As Long
+    Dim s As String
+    Dim i As Long
     Dim ex As Expression
     For i = 1 To m_Col.Count
         Set ex = m_Col.Item(i)
-        If forExcel Then s = s & "="
+        'If forExcel Then s = s & "="
         'Debug.Print i
-        s = s & ex.ToStr(Fmt) & vbCrLf
+        's = s & fmtex.ToStr(Fmt) & vbCrLf
+        s = Fmt.
     Next
     Test3 = s
 End Function

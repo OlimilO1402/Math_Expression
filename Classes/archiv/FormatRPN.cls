@@ -13,44 +13,23 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Implements FormatExpr
-Private m_Sep  As String
-Private m_StrB As StringBuilder
-
-Private Sub Class_Initialize()
-    Set m_StrB = New StringBuilder
-End Sub
+Private m_Sep As String
 
 Friend Sub New_(Optional ByVal SeparatorIsNewLine As Boolean = False)
     If SeparatorIsNewLine Then m_Sep = vbCrLf Else m_Sep = " "
 End Sub
 
 ' v ############################## v '    Implements FormatExpr    ' v ############################## v '
+
 Private Function FormatExpr_ExprLitBolToStr(aLit As ExprLitBol, Optional ByVal ParentRank As OperatorRank = 0&) As String
     FormatExpr_ExprLitBolToStr = aLit.Value
 End Function
-
-Private Sub FormatExpr_ExprLitDatToStr(aLit As ExprLitDat, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
 Private Function FormatExpr_ExprLitNumToStr(aLit As ExprLitNum, Optional ByVal ParentRank As OperatorRank = 0&) As String
     FormatExpr_ExprLitNumToStr = Trim(Str(aLit.Value))
 End Function
 Private Function FormatExpr_ExprLitStrToStr(aLit As ExprLitStr, Optional ByVal ParentRank As OperatorRank = 0&) As String
     FormatExpr_ExprLitStrToStr = aLit.Value
 End Function
-
-Private Sub FormatExpr_ExprOp1DivXToStr(aExpr As ExprOp1DivX, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpAbsToStr(aExpr As ExprOpAbs, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpAddToStr(aExpr As ExprOpAdd, ByVal ParentRank As OperatorRank)
-    '
-End Sub
 
 'for operators: + - * ^
 Private Function FormatExpr_ExprOpBinToStr(aOpBin As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
@@ -67,39 +46,15 @@ Private Function FormatExpr_ExprOpBinToStr(aOpBin As Expression, Optional ByVal 
 End Function
 
 Private Function FormatExpr_ExprOpBolAndToStr(aOpAnd As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    '
+
 End Function
 
-Private Sub FormatExpr_ExprOpBolEqualToStr(aExpr As ExprOpBolEqual, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpBolGreaTEquToStr(aExpr As ExprOpBolGreaTEqu, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpBolGreaTToStr(aExpr As ExprOpBolGreaT, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpBolLessTEquToStr(aExpr As ExprOpBolLessTEqu, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpBolLessTToStr(aExpr As ExprOpBolLessT, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpBolNotEquToStr(aExpr As ExprOpBolNotEqu, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
 Private Function FormatExpr_ExprOpBolOrToStr(aOpAnd As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    '
+
 End Function
 
 Private Function FormatExpr_ExprOpBolXorToStr(aOpAnd As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    '
+
 End Function
 
 Private Function FormatExpr_ExprOpCubToStr(aOpCub As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
@@ -111,7 +66,7 @@ Private Function FormatExpr_ExprOpDivToStr(aOpDiv As Expression, Optional ByVal 
     FormatExpr_ExprOpDivToStr = FormatExpr_ExprOpBinToStr(aOpDiv)
 End Function
 
-Private Function FormatExpr_ExprOpEqualsToStr(aOpEquals As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
+Private Function FormatExpr_ExprOpEqualsToStr(aOpEQuals As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
     '
 End Function
 
@@ -125,30 +80,6 @@ Private Function FormatExpr_ExprOpFactToStr(aOpPow As Expression, Optional ByVal
     s = s & sOp
     FormatExpr_ExprOpFactToStr = s
 End Function
-
-Private Sub FormatExpr_ExprOpLNToStr(aExpr As ExprOpLN, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpLog10ToStr(aExpr As ExprOpLog10, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpLogNToStr(aExpr As ExprOpLogN, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpMulToStr(aExpr As ExprOpMul, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpNegToStr(aExpr As ExprOpNeg, ByVal ParentRank As OperatorRank)
-    '
-End Sub
-
-Private Sub FormatExpr_ExprOpPow10ToStr(aExpr As ExprOpPow10, ByVal ParentRank As OperatorRank)
-    '
-End Sub
 
 Private Function FormatExpr_ExprOpPowToStr(aOpPow As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
     FormatExpr_ExprOpPowToStr = FormatExpr_ExprOpBinToStr(aOpPow)
@@ -167,10 +98,6 @@ Private Function FormatExpr_ExprOpSqrtToStr(aOpSqrt As Expression, Optional ByVa
     If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep & sOp
     FormatExpr_ExprOpFactToStr = s
 End Function
-
-Private Sub FormatExpr_ExprOpStrConcToStr(aExpr As ExprOpStrConc, ByVal ParentRank As OperatorRank)
-    '
-End Sub
 
 Private Function FormatExpr_ExprOpSubtToStr(aOpBin As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
     FormatExpr_ExprOpSubtToStr = FormatExpr_ExprOpBinToStr(aOpBin)
@@ -236,6 +163,3 @@ Private Function FormatExpr_ExprOpIIfToStr(aOpIIf As ExprOpIIf, Optional ByVal P
 '    Expression_ToStr = Fmt.ExprFunctionToStr(exFunc, ParentRank)
 End Function
 
-Private Function FormatExpr_ToStr(ex As Expression) As String
-    '
-End Function

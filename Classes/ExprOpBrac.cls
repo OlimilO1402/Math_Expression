@@ -76,33 +76,10 @@ Private Property Get Expression_Rank() As OperatorRank
     Expression_Rank = myRank
 End Property
 
-Private Function Expression_ToStr(ByVal Fmt As FormatExpr, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-'    Dim b As Boolean: b = ParentRank < myRank And myRank <> m_Ins.Rank
-'    Dim s As String:  s = IIf(b, "(", "")
-'    If Not m_Ins Is Nothing Then s = s & m_Ins.ToStr(myRank)
-'    s = s & IIf(b, ")", "")
-'    Expression_ToStr = s
-    Expression_ToStr = Fmt.ExprOpBracToStr(Me, ParentRank)
+Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
+    '
 End Function
 
-
-' v ############################## v '   Implements OperatorBinary    ' v ############################## v '
-'Private Property Get OperatorBinary_Operator() As String
-'    OperatorBinary_Operator = myOp
-'End Property
-'
-'Private Property Get OperatorBinary_LHSExpr() As Expression
-'    Set OperatorBinary_LHSExpr = m_Ins
-'End Property
-'
-'Private Property Get OperatorBinary_Rank() As OperatorRank
-'    OperatorBinary_Rank = myRank
-'End Property
-'
-'Private Property Get OperatorBinary_RHSExpr() As Expression
-'    Set OperatorBinary_RHSExpr = m_Ins
-'End Property
-'
-'Private Property Set OperatorBinary_RHSExpr(ByVal RHS As Expression)
-'    Set m_Ins = RHS
-'End Property
+Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
+    Fmt.ExprOpBracToStr Me, ParentRank
+End Sub
