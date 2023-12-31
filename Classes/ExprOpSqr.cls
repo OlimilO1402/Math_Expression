@@ -13,11 +13,12 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Implements Expression
-'
+Implements ExprOpPow
 Private m_LHS As Expression
 Private m_RHS As Expression '
 Private Const myRank As Long = OperatorRank.Rank6ExprOpPow
 Private Const myOp   As String = "≤"
+
 Private m_ErrInfo As String
 
 Private Sub Class_Initialize():    Set m_RHS = MNew.ExprLitNum(2): End Sub
@@ -77,7 +78,12 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    '
+    'Klammer auch wenn ParentRank = Rank6ExprOpPow
+    Dim b As Boolean: b = myRank <= ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
+    'Dim b As Boolean: b = ParentRank <> OperatorRank.Rank9ExprOpBrac And ParentRank <> OperatorRank.Rank0None
+    Dim s As String:  s = IIf(b, "(", "")
+    If Not m_RHS Is Nothing Then s = s & m_RHS.ToStr(myRank)
+    Expression_ToStr = s & myOp & IIf(b, ")", "")
 End Function
 
 Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
@@ -85,8 +91,7 @@ Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As Operat
 End Sub
 
     'nur dann keine Klammer ganz auﬂenrum, wenn
-    'Dim b As Boolean: b = myRank <= ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
-'    Dim b As Boolean: b = ParentRank <> OperatorRank.Rank7ExprOpBrac And ParentRank <> OperatorRank.Rank0None
+'    Dim b As Boolean: b = ParentRank <> OperatorRank.Rank9ExprOpBrac And ParentRank <> OperatorRank.Rank0None
 '    Dim s As String:  s = myOp
 '    If Not m_LHS Is Nothing Then s = IIf(b, "(", "") & m_LHS.ToStr(myRank) & s & IIf(b, ")", "") '& " = " & Trim(Str(Expression_Eval))
 '    'If Not m_LHS Is Nothing Then s = m_LHS.ToStr(myRank) & s '& " = " & Trim(Str(Expression_Eval))

@@ -23,7 +23,7 @@ Public Function ExprLitBol(ByVal aValue As Boolean) As ExprLitBol 'can only be T
 End Function
 
 Public Function ExprLitDat(ByVal aValue As Boolean) As ExprLitDat 'Values of date and time
-    Set ExprLitBol = New ExprLitBol: ExprLitBol.New_ aValue
+    Set ExprLitDat = New ExprLitDat: ExprLitDat.New_ aValue
 End Function
 
 Public Function ExprLitNum(ByVal aValue) As ExprLitNum            'any numeric value, byte, int16, int32, int64, float32, float64
@@ -31,24 +31,24 @@ Public Function ExprLitNum(ByVal aValue) As ExprLitNum            'any numeric v
 End Function
 
 Public Function ExprLitStr(ByVal aValue) As ExprLitStr            'string
-    Set ExprLitNum = New ExprLitNum: ExprLitNum.New_ aValue
+    Set ExprLitStr = New ExprLitStr: ExprLitStr.New_ aValue
 End Function
 
 ' v ############################## v '    Boolean Operators    ' v ############################## v '
 Public Function ExprOpBolAnd(aLHS As Expression, aRHS As Expression) As ExprOpBolAnd
-    Set ExprOpBolAnd = New ExprOpBolAnd: ExprOpBolAnd.NewC LHS, RHS
+    Set ExprOpBolAnd = New ExprOpBolAnd: ExprOpBolAnd.New_ aLHS, aRHS
 End Function
 
 Public Function ExprOpBolEqual(aLHS As Expression, aRHS As Expression) As ExprOpBolEqual
-    Set ExprOpBolEqual = New ExprOpBolEqual: ExprOpBolEqual.NewC LHS, RHS
+    Set ExprOpBolEqual = New ExprOpBolEqual: ExprOpBolEqual.New_ aLHS, aRHS
 End Function
 
 Public Function ExprOpBolOr(aLHS As Expression, aRHS As Expression) As ExprOpBolOr
-    Set ExprOpBolOr = New ExprOpBolOr: ExprOpBolOr.NewC LHS, RHS
+    Set ExprOpBolOr = New ExprOpBolOr: ExprOpBolOr.New_ aLHS, aRHS
 End Function
 
 Public Function ExprOpBolXor(aLHS As Expression, aRHS As Expression) As ExprOpBolXor
-    Set ExprOpBolXor = New ExprOpBolXor: ExprOpBolXor.NewC LHS, RHS
+    Set ExprOpBolXor = New ExprOpBolXor: ExprOpBolXor.New_ aLHS, aRHS
 End Function
 
 

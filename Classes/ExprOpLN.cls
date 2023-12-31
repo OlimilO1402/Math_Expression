@@ -18,6 +18,7 @@ Implements Expression
 Private m_RHS As Expression
 Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
 Private Const myOp   As String = "LN"
+
 Private m_ErrInfo As String
 
 
@@ -80,7 +81,10 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    '
+    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
+    Dim s As String:  s = myOp & "("
+    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & myOp & m_RHS.ToStr(myRank) & ")" & IIf(b, ")", "")
+    Expression_ToStr = s
 End Function
 
 Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
@@ -94,8 +98,4 @@ End Sub
 '   32           |  2           | Log(Zahl;Basis) =   5    | Log        := Logarithm to base  2, if the base 2 was explicitely given
 
 
-'    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank7ExprOpBrac
-'    Dim s As String:  s = myOp
-'    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & myOp & m_RHS.ToStr(myRank) & ")" & IIf(b, ")", "")
-'    Expression_ToStr = s
 

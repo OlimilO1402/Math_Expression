@@ -13,7 +13,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Public Sub ExprFunctionToStr(aFunc As ExprFunction, ByVal ParentRank As OperatorRank):   End Sub
-Public Sub ExprFunction2ToStr(aFunc As ExprFunction, ByVal ParentRank As OperatorRank):  End Sub
+'Public Sub ExprFunction2ToStr(aFunc As ExprFunction, ByVal ParentRank As OperatorRank):  End Sub
+Public Sub ExprFunction2ToStr(aFunc As Expression, ByVal ParentRank As OperatorRank):  End Sub
+
 Public Sub ExprLitBolToStr(aLit As ExprLitBol, ByVal ParentRank As OperatorRank):        End Sub
 Public Sub ExprLitDatToStr(aLit As ExprLitDat, ByVal ParentRank As OperatorRank):        End Sub
 Public Sub ExprLitNumToStr(aLit As ExprLitNum, ByVal ParentRank As OperatorRank):        End Sub
@@ -42,8 +44,8 @@ Public Sub ExprOpMulToStr(aExpr As ExprOpMul, ByVal ParentRank As OperatorRank):
 Public Sub ExprOpNegToStr(aExpr As ExprOpNeg, ByVal ParentRank As OperatorRank):         End Sub
 Public Sub ExprOpPowToStr(aExpr As ExprOpPow, ByVal ParentRank As OperatorRank):         End Sub
 Public Sub ExprOpPow10ToStr(aExpr As ExprOpPow10, ByVal ParentRank As OperatorRank):     End Sub
-Public Sub ExprOpSqrToStr(aExpr As Expression, ByVal ParentRank As OperatorRank):        End Sub
-Public Sub ExprOpSqrtToStr(aExpr As Expression, ByVal ParentRank As OperatorRank):       End Sub
+Public Sub ExprOpSqrToStr(aExpr As ExprOpSqr, ByVal ParentRank As OperatorRank):        End Sub
+Public Sub ExprOpSqrtToStr(aExpr As ExprOpSqrt, ByVal ParentRank As OperatorRank):       End Sub
 Public Sub ExprOpStrConcToStr(aExpr As ExprOpStrConc, ByVal ParentRank As OperatorRank): End Sub
 Public Sub ExprOpSubtToStr(aExpr As ExprOpSubt, ByVal ParentRank As OperatorRank):       End Sub
 
@@ -52,4 +54,4 @@ Public Sub ExprOpSubtToStr(aExpr As ExprOpSubt, ByVal ParentRank As OperatorRank
 'Public Sub ExprOpUnaAsRToStr(aOpUnAsR As Expression, ByVal ParentRank As OperatorRank): End Sub
 'Public Sub ExprFuncAbsToStr(aExprAbs As Expression, ByVal ParentRank As OperatorRank):  End Sub
 
-Public Function ToStr(ex As Expression) As String: End Function
+Public Function ToStr(Optional ex As Expression = Nothing) As String: End Function

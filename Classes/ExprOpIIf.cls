@@ -16,8 +16,9 @@ Implements Expression
 Private m_Condition  As Expression
 Private m_ExprTrue   As Expression
 Private m_ExprFalse  As Expression
-Private Const myOp   As String = "IIf"
 Private Const myRank As Long = OperatorRank.Rank9ExprOpBrac
+Private Const myOp   As String = "IIf"
+
 Private m_ErrInfo As String
 
 '
@@ -51,7 +52,7 @@ End Property
 Private Function Expression_Eval()
 Try: On Error GoTo Catch
     If Not Expression_CanEval Then Exit Function
-    If m_Condition.Eval Then
+    If CBool(m_Condition.Eval) Then
         Expression_Eval = m_ExprTrue.Eval
     Else
         Expression_Eval = m_ExprFalse.Eval
@@ -91,7 +92,12 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    '
+    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
+    Dim s As String:  s = IIf(b, "(", "") & myOp & "("
+    If Not m_Condition Is Nothing Then s = s & m_Condition.ToStr(myRank)
+    If Not m_ExprTrue Is Nothing Then s = s & ", " & m_ExprTrue.ToStr(myRank)
+    If Not m_ExprFalse Is Nothing Then s = s & ", " & m_ExprFalse.ToStr(myRank) & ")"
+    Expression_ToStr = s & IIf(b, ")", "")
 End Function
 
 Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)

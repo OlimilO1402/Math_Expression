@@ -19,14 +19,6 @@ Begin VB.Form FMain
    ScaleHeight     =   6150
    ScaleWidth      =   13005
    StartUpPosition =   3  'Windows-Standard
-   Begin VB.CommandButton Command1 
-      Caption         =   "Command1"
-      Height          =   255
-      Left            =   9720
-      TabIndex        =   47
-      Top             =   0
-      Width           =   1095
-   End
    Begin VB.CommandButton BtnGetResults 
       Caption         =   "GetResults"
       Height          =   375
@@ -85,6 +77,15 @@ Begin VB.Form FMain
       End
    End
    Begin VB.TextBox Text1 
+      BeginProperty Font 
+         Name            =   "Consolas"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   5055
       Left            =   7200
       MultiLine       =   -1  'True
@@ -820,6 +821,8 @@ Private Function GetFormat() As FormatExpr
 End Function
 
 Private Sub Command1_Click()
+    'MsgBox MMath.Fact(25)
+    'Exit Sub
 '    Dim tef As TestExFunc: Set tef = New TestExFunc
 '    MsgBox tef.TestIt(1, 2, 3)
 '    Dim fnc As ExprFunction
@@ -859,7 +862,16 @@ Private Sub Command1_Click()
 '    Set ex = MNew.ExprOpIIf(MNew.ExprLitBol(False), MNew.ExprLitBol(False), MNew.ExprLitBol(True))
 '    MsgBox ex.Eval
     
-    set ex = mnew.ExprOpIIf(mnew.expropbolequals
+    Set ex = MNew.ExprOpIIf(MNew.ExprOpBolEqual(MNew.ExprLitNum(123), MNew.ExprLitNum(234)), MNew.ExprLitNum(111), MNew.ExprLitNum(222))
+    MsgBox ex.ToStr & " = " & ex.Eval
+    Set ex = MNew.ExprLitNum(123)
+    'Set ex = MNew.ExprOpAdd(ex, MNew.ExprLitNum(456))
+    'Set ex = MNew.ExprOpSubt(ex, MNew.ExprLitNum(456))
+    'Set ex = MNew.ExprOpMul(ex, MNew.ExprLitNum(456))
+    'Set ex = MNew.ExprOpDiv(ex, MNew.ExprLitNum(456))
+    Set ex = MNew.ExprOpDiv(MNew.ExprOpAdd(ex, MNew.ExprLitNum(456)), MNew.ExprOpSubt(MNew.ExprOpMul(ex, MNew.ExprLitNum(789)), MNew.ExprLitNum(456)))
+    Set ex = MNew.ExprOpIIf(MNew.ExprOpBolEqual(MNew.ExprLitNum(123), MNew.ExprLitNum(123)), MNew.ExprLitNum(111), MNew.ExprLitNum(222))
+    MsgBox ex.ToStr & " = " & ex.Eval
 End Sub
 
 Private Sub Form_Load()
@@ -1082,5 +1094,5 @@ End Sub
 Function EvalToStr(e As Expression, Optional ByVal inclResult As Boolean = False, Optional ByVal inclEquSign As Boolean = False) As String
     If e Is Nothing Then Exit Function
     'If Not e.CanEval Then Exit Function
-    EvalToStr = e.ToStr(GetFormat) & IIf(inclResult, " = " & Trim(Str(e.Eval)), IIf(inclEquSign And e.CanEval, " = ", ""))
+    EvalToStr = e.ToStr & IIf(inclResult, " = " & Trim(Str(e.Eval)), IIf(inclEquSign And e.CanEval, " = ", ""))
 End Function

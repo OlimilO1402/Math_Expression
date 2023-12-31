@@ -25,27 +25,56 @@ Friend Sub New_(Optional ByVal SeparatorIsNewLine As Boolean = False)
 End Sub
 
 ' v ############################## v '    Implements FormatExpr    ' v ############################## v '
-Private Function FormatExpr_ExprLitBolToStr(aLit As ExprLitBol, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprLitBolToStr = aLit.Value
-End Function
 
-Private Sub FormatExpr_ExprLitDatToStr(aLit As ExprLitDat, ByVal ParentRank As OperatorRank)
+Private Sub FormatExpr_ExprFunctionToStr(aFunc As ExprFunction, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
-Private Function FormatExpr_ExprLitNumToStr(aLit As ExprLitNum, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprLitNumToStr = Trim(Str(aLit.Value))
-End Function
-Private Function FormatExpr_ExprLitStrToStr(aLit As ExprLitStr, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprLitStrToStr = aLit.Value
-End Function
+'Private Sub FormatExpr_ExprFunction2ToStr(aFunc As ExprFunction, ByVal ParentRank As OperatorRank)
+Private Sub FormatExpr_ExprFunction2ToStr(aFunc As Expression, ByVal ParentRank As OperatorRank)
+'    With aFunc
+'        Dim sOp As String:         sOp = .Operator1
+'        Dim LHS As Expression: Set LHS = .Expr1
+'        Dim RHS As Expression: Set RHS = .Expr2
+'    End With
+'    Dim s As String
+'    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
+'    If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
+'    s = s & sOp '& m_Sep
+'    'FormatExpr_ExprFunction2ToStr = s
+End Sub
+
+Private Sub FormatExpr_ExprLitBolToStr(aLit As ExprLitBol, ByVal ParentRank As OperatorRank)
+    m_StrB.Append aLit.Value
+End Sub
+
+Private Sub FormatExpr_ExprLitDatToStr(aLit As ExprLitDat, ByVal ParentRank As OperatorRank)
+    m_StrB.Append aLit.Value
+End Sub
+
+Private Sub FormatExpr_ExprLitNumToStr(aLit As ExprLitNum, ByVal ParentRank As OperatorRank)
+    m_StrB.Append aLit.Value
+End Sub
+
+Private Sub FormatExpr_ExprLitStrToStr(aLit As ExprLitStr, ByVal ParentRank As OperatorRank)
+    m_StrB.Append aLit.Value
+End Sub
 
 Private Sub FormatExpr_ExprOp1DivXToStr(aExpr As ExprOp1DivX, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
 Private Sub FormatExpr_ExprOpAbsToStr(aExpr As ExprOpAbs, ByVal ParentRank As OperatorRank)
-    '
+'    With aExprAbs
+'        Dim sOp As String:         sOp = "Abs"
+'        Dim LHS As Expression: Set LHS = .Expr1
+'        Dim RHS As Expression: Set RHS = .Expr2
+'    End With
+'    Dim s As String
+'    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
+'    If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
+'    s = s & sOp '& m_Sep
+'    'FormatExpr_ExprFuncAbsToStr = s
 End Sub
 
 Private Sub FormatExpr_ExprOpAddToStr(aExpr As ExprOpAdd, ByVal ParentRank As OperatorRank)
@@ -53,28 +82,24 @@ Private Sub FormatExpr_ExprOpAddToStr(aExpr As ExprOpAdd, ByVal ParentRank As Op
 End Sub
 
 'for operators: + - * ^
-Private Function FormatExpr_ExprOpBinToStr(aOpBin As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    With aOpBin
-        Dim sOp As String:         sOp = Trim(.Operator1)
-        Dim LHS As Expression: Set LHS = .Expr1
-        Dim RHS As Expression: Set RHS = .Expr2
-    End With
-    Dim s As String
-    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
-    If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
-    s = s & sOp '& m_Sep
-    FormatExpr_ExprOpBinToStr = s
-End Function
+'Private Sub FormatExpr_ExprOpBinToStr(aOpBin As Expression, ByVal ParentRank As OperatorRank)
+'    With aOpBin
+'        Dim sOp As String:         sOp = Trim(.Operator1)
+'        Dim LHS As Expression: Set LHS = .Expr1
+'        Dim RHS As Expression: Set RHS = .Expr2
+'    End With
+'    Dim s As String
+'    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
+'    If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
+'    s = s & sOp '& m_Sep
+'    FormatExpr_ExprOpBinToStr = s
+'End Sub
 
-Private Function FormatExpr_ExprOpBolAndToStr(aOpAnd As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    '
-End Function
-
-Private Sub FormatExpr_ExprOpBolEqualToStr(aExpr As ExprOpBolEqual, ByVal ParentRank As OperatorRank)
+Private Sub FormatExpr_ExprOpBolAndToStr(aExpr As ExprOpBolAnd, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
-Private Sub FormatExpr_ExprOpBolGreaTEquToStr(aExpr As ExprOpBolGreaTEqu, ByVal ParentRank As OperatorRank)
+Private Sub FormatExpr_ExprOpBolEqualToStr(aExpr As ExprOpBolEqual, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
@@ -82,7 +107,7 @@ Private Sub FormatExpr_ExprOpBolGreaTToStr(aExpr As ExprOpBolGreaT, ByVal Parent
     '
 End Sub
 
-Private Sub FormatExpr_ExprOpBolLessTEquToStr(aExpr As ExprOpBolLessTEqu, ByVal ParentRank As OperatorRank)
+Private Sub FormatExpr_ExprOpBolGreaTEquToStr(aExpr As ExprOpBolGreaTEqu, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
@@ -90,41 +115,58 @@ Private Sub FormatExpr_ExprOpBolLessTToStr(aExpr As ExprOpBolLessT, ByVal Parent
     '
 End Sub
 
+Private Sub FormatExpr_ExprOpBolLessTEquToStr(aExpr As ExprOpBolLessTEqu, ByVal ParentRank As OperatorRank)
+    '
+End Sub
+
 Private Sub FormatExpr_ExprOpBolNotEquToStr(aExpr As ExprOpBolNotEqu, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
-Private Function FormatExpr_ExprOpBolOrToStr(aOpAnd As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
+Private Sub FormatExpr_ExprOpBolOrToStr(aExpr As ExprOpBolOr, ByVal ParentRank As OperatorRank)
     '
-End Function
+End Sub
 
-Private Function FormatExpr_ExprOpBolXorToStr(aOpAnd As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
+Private Sub FormatExpr_ExprOpBolXorToStr(aExpr As ExprOpBolXor, ByVal ParentRank As OperatorRank)
     '
-End Function
+End Sub
+'|x|, (x)
+Private Sub FormatExpr_ExprOpBracToStr(aExpr As ExprOpBrac, ByVal ParentRank As OperatorRank)
+'    With aOpUnaAsR
+'        'Dim s1 As String: s1 = .Operator1
+'        'Dim s2 As String: s2 = .Operator2
+'
+'    End With
+End Sub
 
-Private Function FormatExpr_ExprOpCubToStr(aOpCub As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprOpCubToStr = FormatExpr_ExprOpPowToStr(aOpCub)
-End Function
+Private Sub FormatExpr_ExprOpCubToStr(aExpr As ExprOpCub, ByVal ParentRank As OperatorRank)
+'    FormatExpr_ExprOpCubToStr = FormatExpr_ExprOpPowToStr(aOpCub)
+End Sub
 
 'for operator: /
-Private Function FormatExpr_ExprOpDivToStr(aOpDiv As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    FormatExpr_ExprOpDivToStr = FormatExpr_ExprOpBinToStr(aOpDiv)
-End Function
+Private Sub FormatExpr_ExprOpDivToStr(aExpr As ExprOpDiv, ByVal ParentRank As OperatorRank)
+'    FormatExpr_ExprOpDivToStr = FormatExpr_ExprOpBinToStr(aOpDiv)
+End Sub
 
-Private Function FormatExpr_ExprOpEqualsToStr(aOpEquals As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    '
-End Function
+Private Sub FormatExpr_ExprOpFactToStr(aExpr As ExprOpFact, ByVal ParentRank As OperatorRank)
+'    With aOpPow
+'        Dim sOp As String:         sOp = .Operator1
+'        Dim LHS As Expression: Set LHS = .Expr1
+'    End With
+'    Dim s As String
+'    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
+'    s = s & sOp
+'    FormatExpr_ExprOpFactToStr = s
+End Sub
 
-Private Function FormatExpr_ExprOpFactToStr(aOpPow As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    With aOpPow
-        Dim sOp As String:         sOp = .Operator1
-        Dim LHS As Expression: Set LHS = .Expr1
-    End With
-    Dim s As String
-    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
-    s = s & sOp
-    FormatExpr_ExprOpFactToStr = s
-End Function
+Private Sub FormatExpr_ExprOpIIfToStr(aExpr As ExprOpIIf, ByVal ParentRank As OperatorRank)
+'    Dim ex As Expression: Set ex = aOpIIf
+'    Dim FuncName As String: FuncName = IIf(m_XLCompatbl, "Wenn", ex.Operator1)
+'    Dim exFunc As ExprFunction: Set exFunc = MNew.ExprFunction(FuncName, Nothing)
+'    exFunc.params.Add aOpIIf.Condition
+'    exFunc.params.Add ex.Expr1:    exFunc.params.Add ex.Expr2
+'    Expression_ToStr = Fmt.ExprFunctionToStr(exFunc, ParentRank)
+End Sub
 
 Private Sub FormatExpr_ExprOpLNToStr(aExpr As ExprOpLN, ByVal ParentRank As OperatorRank)
     '
@@ -146,96 +188,48 @@ Private Sub FormatExpr_ExprOpNegToStr(aExpr As ExprOpNeg, ByVal ParentRank As Op
     '
 End Sub
 
+Private Sub FormatExpr_ExprOpPowToStr(aExpr As ExprOpPow, ByVal ParentRank As OperatorRank)
+'    FormatExpr_ExprOpPowToStr = FormatExpr_ExprOpBinToStr(aOpPow)
+End Sub
+
 Private Sub FormatExpr_ExprOpPow10ToStr(aExpr As ExprOpPow10, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
-Private Function FormatExpr_ExprOpPowToStr(aOpPow As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprOpPowToStr = FormatExpr_ExprOpBinToStr(aOpPow)
-End Function
+Private Sub FormatExpr_ExprOpSqrToStr(aExpr As ExprOpSqr, ByVal ParentRank As OperatorRank)
+'    FormatExpr_ExprOpSqrToStr = FormatExpr_ExprOpCubToStr(aOpSqr)
+End Sub
 
-Private Function FormatExpr_ExprOpSqrToStr(aOpSqr As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprOpSqrToStr = FormatExpr_ExprOpCubToStr(aOpSqr)
-End Function
-
-Private Function FormatExpr_ExprOpSqrtToStr(aOpSqrt As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    With aOpSqrt
-        Dim sOp As String:         sOp = .Operator1
-        Dim LHS As Expression: Set LHS = .Expr1
-    End With
-    Dim s As String
-    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep & sOp
-    FormatExpr_ExprOpFactToStr = s
-End Function
+Private Sub FormatExpr_ExprOpSqrtToStr(aExpr As ExprOpSqrt, ByVal ParentRank As OperatorRank)
+'    With aOpSqrt
+'        Dim sOp As String:         sOp = .Operator1
+'        Dim LHS As Expression: Set LHS = .Expr1
+'    End With
+'    Dim s As String
+'    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep & sOp
+'    FormatExpr_ExprOpFactToStr = s
+End Sub
 
 Private Sub FormatExpr_ExprOpStrConcToStr(aExpr As ExprOpStrConc, ByVal ParentRank As OperatorRank)
     '
 End Sub
 
-Private Function FormatExpr_ExprOpSubtToStr(aOpBin As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    FormatExpr_ExprOpSubtToStr = FormatExpr_ExprOpBinToStr(aOpBin)
-End Function
+Private Sub FormatExpr_ExprOpSubtToStr(aExpr As ExprOpSubt, ByVal ParentRank As OperatorRank)
+'    FormatExpr_ExprOpSubtToStr = FormatExpr_ExprOpBinToStr(aOpBin)
+End Sub
 
 'Oh, and everything else is just the same; values to stack, fnktname/operator to stack, ready
-Private Function FormatExpr_ExprOpUnaAsLToStr(aOpUnAsL As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    '
-End Function
+'Private Sub FormatExpr_ExprOpUnaAsLToStr(aOpUnAsL As Expression, ByVal ParentRank As OperatorRank)
+'    '
+'End Sub
 
 'x², x³, x!
-Private Function FormatExpr_ExprOpUnaAsRToStr(aOpUnAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    With aOpUnAsR
-        Dim sOp As String
-    End With
-End Function
+'Private Sub FormatExpr_ExprOpUnaAsRToStr(aOpUnAsR As Expression, ByVal ParentRank As OperatorRank)
+'    With aOpUnAsR
+'        Dim sOp As String
+'    End With
+'End Sub
 
-'|x|, (x)
-Private Function FormatExpr_ExprOpBracToStr(aOpUnaAsR As Expression, Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    With aOpUnaAsR
-        'Dim s1 As String: s1 = .Operator1
-        'Dim s2 As String: s2 = .Operator2
-        
-    End With
-End Function
-
-Private Function FormatExpr_ExprFunctionToStr(aFunc As ExprFunction, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    '
-End Function
-
-Private Function FormatExpr_ExprFunction2ToStr(aFunc As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    With aFunc
-        Dim sOp As String:         sOp = .Operator1
-        Dim LHS As Expression: Set LHS = .Expr1
-        Dim RHS As Expression: Set RHS = .Expr2
-    End With
-    Dim s As String
-    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
-    If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
-    s = s & sOp '& m_Sep
-    FormatExpr_ExprFunction2ToStr = s
-End Function
-
-Private Function FormatExpr_ExprFuncAbsToStr(aExprAbs As Expression, Optional ByVal ParentRank As OperatorRank = 0&) As String
-    With aExprAbs
-        Dim sOp As String:         sOp = "Abs"
-        Dim LHS As Expression: Set LHS = .Expr1
-        Dim RHS As Expression: Set RHS = .Expr2
-    End With
-    Dim s As String
-    If Not LHS Is Nothing Then s = s & LHS.ToStr(Me) & m_Sep
-    If Not RHS Is Nothing Then s = s & RHS.ToStr(Me) & m_Sep
-    s = s & sOp '& m_Sep
-    FormatExpr_ExprFuncAbsToStr = s
-End Function
-
-Private Function FormatExpr_ExprOpIIfToStr(aOpIIf As ExprOpIIf, Optional ByVal ParentRank As OperatorRank = 0&) As String
-'    Dim ex As Expression: Set ex = aOpIIf
-'    Dim FuncName As String: FuncName = IIf(m_XLCompatbl, "Wenn", ex.Operator1)
-'    Dim exFunc As ExprFunction: Set exFunc = MNew.ExprFunction(FuncName, Nothing)
-'    exFunc.params.Add aOpIIf.Condition
-'    exFunc.params.Add ex.Expr1:    exFunc.params.Add ex.Expr2
-'    Expression_ToStr = Fmt.ExprFunctionToStr(exFunc, ParentRank)
-End Function
-
-Private Function FormatExpr_ToStr(ex As Expression) As String
+Private Function FormatExpr_ToStr(Optional ex As Expression = Nothing) As String
     '
 End Function

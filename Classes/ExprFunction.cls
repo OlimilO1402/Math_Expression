@@ -138,11 +138,22 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    '
+    Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
+    Dim s As String:  s = IIf(b, "(", "") & m_FncName & "("
+    If Not m_Params Is Nothing Then
+        Dim i As Long: i = 1
+        Dim c As Long: c = m_Params.Count
+        Dim ex As Expression: Set ex = m_Params.Item(i)
+        s = s & ex.ToStr(myRank)
+        If i < c Then
+            For i = 2 To c
+                Set ex = m_Params.Item(i)
+                s = s & ", " & ex.ToStr(myRank)
+            Next
+        End If
+    End If
+    Expression_ToStr = s & ")" & IIf(b, ")", "")
 End Function
 Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)
     Fmt.ExprFunctionToStr Me, ParentRank
 End Sub
-
-
-

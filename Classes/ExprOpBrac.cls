@@ -21,6 +21,7 @@ Private Const myOp1  As String = "("
 Private Const myOp2  As String = ")"
 Private m_ErrInfo As String
 
+
 Friend Sub New_(aInside As Expression)
     Set m_Ins = aInside
 End Sub
@@ -77,7 +78,11 @@ Private Property Get Expression_Rank() As OperatorRank
 End Property
 
 Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
-    '
+    Dim b As Boolean: b = ParentRank < myRank And myRank <> m_Ins.Rank
+    Dim s As String:  s = IIf(b, "(", "")
+    If Not m_Ins Is Nothing Then s = s & m_Ins.ToStr(myRank)
+    s = s & IIf(b, ")", "")
+    Expression_ToStr = s
 End Function
 
 Private Sub Expression_ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank)

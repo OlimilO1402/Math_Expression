@@ -14,9 +14,10 @@ Public Function Test3(Fmt As FormatExpr) As String
         'If forExcel Then s = s & "="
         'Debug.Print i
         's = s & fmtex.ToStr(Fmt) & vbCrLf
-        s = Fmt.
+        'ex.ToFmt
+        Fmt.ToStr ex
     Next
-    Test3 = s
+    Test3 = Fmt.ToStr
 End Function
 
 ' OK eine Testroutine mit allen Operatoren
@@ -77,10 +78,6 @@ Private Function GetEx(ByVal e As Long, exL As Expression, exR As Expression) As
     Case 17: ToggleNeg = Not ToggleNeg:  If ToggleNeg Then Set GetEx = MNew.ExprOpNeg(exL) Else Set GetEx = MNew.ExprOpNeg(exR)
     End Select
 End Function
-
-Sub TestVBCode()
-    '
-End Sub
 
 Public Function GetResults() As String
     If m_Col Is Nothing Then Set m_Col = GetListOfBinaryExpressions

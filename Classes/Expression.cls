@@ -25,3 +25,4 @@ Public Property Get Operator2() As String:          End Property
 Public Property Get Rank() As OperatorRank:         End Property
 Public Function ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String: End Function
 Public Sub ToFmt(ByVal Fmt As FormatExpr, ByVal ParentRank As OperatorRank): End Sub
+
