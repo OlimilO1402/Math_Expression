@@ -29,17 +29,34 @@ Begin VB.Form FMain
    End
    Begin VB.Frame Frame1 
       Caption         =   "Output"
-      Height          =   975
+      Height          =   1335
       Left            =   8760
       TabIndex        =   40
       Top             =   120
       Width           =   4215
+      Begin VB.CheckBox ChkToClipB 
+         Caption         =   "To Clipboard"
+         Height          =   255
+         Left            =   2400
+         TabIndex        =   48
+         Top             =   240
+         Width           =   1335
+      End
+      Begin VB.OptionButton OptToStr 
+         Caption         =   "ToStr"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   47
+         Top             =   240
+         Value           =   -1  'True
+         Width           =   1215
+      End
       Begin VB.CheckBox ChkXLCompat 
          Caption         =   "xL compat."
          Height          =   255
          Left            =   2760
          TabIndex        =   45
-         Top             =   240
+         Top             =   600
          Width           =   1335
       End
       Begin VB.CheckBox ChkSepAsNewL 
@@ -47,7 +64,7 @@ Begin VB.Form FMain
          Height          =   255
          Left            =   1440
          TabIndex        =   44
-         Top             =   600
+         Top             =   960
          Width           =   2055
       End
       Begin VB.CheckBox ChkCondensed 
@@ -55,7 +72,7 @@ Begin VB.Form FMain
          Height          =   255
          Left            =   1440
          TabIndex        =   43
-         Top             =   240
+         Top             =   600
          Width           =   1335
       End
       Begin VB.OptionButton OptRPN 
@@ -63,7 +80,7 @@ Begin VB.Form FMain
          Height          =   255
          Left            =   120
          TabIndex        =   42
-         Top             =   600
+         Top             =   960
          Width           =   1215
       End
       Begin VB.OptionButton OptAlgebra 
@@ -71,8 +88,7 @@ Begin VB.Form FMain
          Height          =   255
          Left            =   120
          TabIndex        =   41
-         Top             =   240
-         Value           =   -1  'True
+         Top             =   600
          Width           =   1215
       End
    End
@@ -86,13 +102,13 @@ Begin VB.Form FMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   5055
+      Height          =   4575
       Left            =   7200
       MultiLine       =   -1  'True
       ScrollBars      =   3  'Beides
       TabIndex        =   39
       Text            =   "FMain.frx":08CA
-      Top             =   1080
+      Top             =   1560
       Width           =   5775
    End
    Begin VB.CommandButton BtnTests 
@@ -804,9 +820,16 @@ Private m_TBHasResult As Boolean
 
 Private Sub BtnTests_Click()
     Dim s As String
-    s = MTests.Test3(GetFormat)
-    Clipboard.SetText s
+    If OptToStr.Value Then
+        s = MTests.Test3
+    Else
+        s = MTests.Test3(GetFormat)
+    End If
     Text1.Text = s
+    If ChkToClipB.Value = vbChecked Then
+        Clipboard.Clear
+        Clipboard.SetText s
+    End If
 End Sub
 
 Private Sub BtnGetResults_Click()

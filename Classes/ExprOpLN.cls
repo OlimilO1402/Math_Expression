@@ -82,8 +82,8 @@ End Property
 
 Private Function Expression_ToStr(Optional ByVal ParentRank As OperatorRank = OperatorRank.Rank0None) As String
     Dim b As Boolean: b = myRank < ParentRank And ParentRank <> OperatorRank.Rank9ExprOpBrac
-    Dim s As String:  s = myOp & "("
-    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & myOp & m_RHS.ToStr(myRank) & ")" & IIf(b, ")", "")
+    Dim s As String ':  s = myOp & "("
+    If Not m_RHS Is Nothing Then s = IIf(b, "(", "") & myOp & "(" & m_RHS.ToStr(myRank) & ")" & IIf(b, ")", "")
     Expression_ToStr = s
 End Function
 

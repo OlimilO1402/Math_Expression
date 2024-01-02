@@ -2,26 +2,55 @@ Attribute VB_Name = "MTests"
 Option Explicit
 Private m_Col As Collection
 
-Public Function Test3(Fmt As FormatExpr) As String
-    
-    'Dim forExcel As Boolean: forExcel = True
-    Set m_Col = GetListOfBinaryExpressions
-    Dim s As String
+Private toggleAbs  As Boolean
+Private toggle1dx  As Boolean
+Private toggleBrc  As Boolean
+Private toggleSqr  As Boolean
+Private toggleCub  As Boolean
+Private toggleFac  As Boolean
+Private toggleSqrt As Boolean
+Private toggleLN   As Boolean
+Private toggleLg10 As Boolean
+Private toggleLgN  As Boolean
+Private ToggleNeg  As Boolean
+
+Private Sub InitToggles()
+    toggleAbs = False
+    toggle1dx = False
+    toggleBrc = False
+    toggleSqr = False
+    toggleCub = False
+    toggleFac = False
+    toggleSqrt = False
+    toggleLN = False
+    toggleLg10 = False
+    toggleLgN = False
+    ToggleNeg = False
+End Sub
+
+Public Function Test3(Optional Fmt As FormatExpr = Nothing) As String
+    InitToggles
+    If m_Col Is Nothing Then Set m_Col = GetListOfBinaryExpressions
     Dim i As Long
     Dim ex As Expression
+    If Fmt Is Nothing Then
+        Dim sb As StringBuilder: Set sb = New StringBuilder
+        For i = 1 To m_Col.Count
+            Set ex = m_Col.Item(i)
+            sb.AppendLine ex.ToStr & vbTab & "'=" & vbTab & ex.Eval
+        Next
+        Test3 = sb.ToStr
+        Exit Function
+    End If
+    
     For i = 1 To m_Col.Count
         Set ex = m_Col.Item(i)
-        'If forExcel Then s = s & "="
-        'Debug.Print i
-        's = s & fmtex.ToStr(Fmt) & vbCrLf
-        'ex.ToFmt
         Fmt.ToStr ex
     Next
     Test3 = Fmt.ToStr
 End Function
 
 ' OK eine Testroutine mit allen Operatoren
-' '
 Public Function GetListOfBinaryExpressions() As Collection
     Dim n As Long: n = 17
     Dim exList As New Collection
@@ -47,17 +76,6 @@ Public Function GetListOfBinaryExpressions() As Collection
 End Function
 
 Private Function GetEx(ByVal e As Long, exL As Expression, exR As Expression) As Expression
-    Static toggleAbs  As Boolean
-    Static toggle1dx  As Boolean
-    Static toggleBrc  As Boolean
-    Static toggleSqr  As Boolean
-    Static toggleCub  As Boolean
-    Static toggleFac  As Boolean
-    Static toggleSqrt As Boolean
-    Static toggleLN   As Boolean
-    Static toggleLg10 As Boolean
-    Static toggleLgN  As Boolean
-    Static ToggleNeg  As Boolean
     Select Case e
     Case 1:  Set GetEx = MNew.ExprOpAdd(exL, exR)
     Case 2:  Set GetEx = MNew.ExprOpSubt(exL, exR)
